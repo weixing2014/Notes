@@ -2,6 +2,7 @@
 
 import React from 'react';
 import uuid from 'node-uuid';
+import Note from './note'
 
 const notes = [
   {
@@ -44,9 +45,7 @@ export default class Main extends React.Component {
     return notes.map(
       function(note) {
         return (
-          <li key={note.id}>
-            {note.task}
-          </li>
+          <Note key={ note.id } task={ note.task } /> 
         )
       }
     );
