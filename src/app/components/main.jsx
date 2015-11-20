@@ -3,8 +3,15 @@
 import React from 'react';
 import FlatButton from 'material-ui/lib/flat-button';
 import List from 'material-ui/lib/lists/list';
+import ListDivider from 'material-ui/lib/lists/list-divider';
+import ListItem from 'material-ui/lib/lists/list-item';
 import uuid from 'node-uuid';
 import Notes from './notes'
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import MenuDivider from 'material-ui/lib/menus/menu-divider';
+import IconButton from 'material-ui/lib/icon-button';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import Colors from 'material-ui/lib/styles/colors'
 
 export default class Main extends React.Component {
 
@@ -43,13 +50,13 @@ export default class Main extends React.Component {
     );
   }
 
-  onUpdateNote( note ) {
+  onUpdateNote( noteId, newTask ) {
     let notes = this.state.notes;
     let index = notes.findIndex(
-      (n) => n.id === note.id
+      (n) => n.id === noteId
     );
 
-    notes[index]['task'] = note.task;
+    notes[index]['task'] = newTask;
     this.setState(notes);
   }
 

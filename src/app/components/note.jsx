@@ -1,6 +1,7 @@
 import React from 'react';
 import ListItem from 'material-ui/lib/lists/list-item';
 import TextField from 'material-ui/lib/text-field';
+import NoteTextField from './note-text-field'
 
 export default class Note extends React.Component {
 
@@ -14,6 +15,8 @@ export default class Note extends React.Component {
 
     this.onEditNote = this.onEditNote.bind(this);
     this.onEditFinish = this.onEditFinish.bind(this);
+    this.renderEdit = this.renderEdit.bind(this);
+    this.renderTask = this.renderTask.bind(this);
   }
 
   onEditNote() {
@@ -22,29 +25,31 @@ export default class Note extends React.Component {
     });
   }
 
-  onEditFinish() {
+  onEditFinish( newTask ) {
     this.setState({
       isEditing: false,
     });
-    ;
-    this.props.onUpdateNote({
-      id: this.props.dataKey,
-      task: this.refs.textField.getValue(),
-    });
+
+    this.props.onUpdateNote(newTask);
+  }
+
+  renderEdit() {
+    return (
+      <NoteTextField ref={"noteTextField"} task={ this.props.task } onEnterKeyDown={ this.onEditFinish } />
+    );
+  }
+
+  renderTask() {
+    return (
+      <ListItem dataKey={ this.props.dataKey } primaryText={ this.props.task } onTouchTap={ this.onEditNote } />
+    );
   }
 
   render() {
-    ;
-    if ( this.state.isEditing ) {
-      return (
-        <div>
-          <TextField ref="textField" defaultValue={ this.props.task } onEnterKeyDown={ this.onEditFinish} />
-        </div>
-      )
-    } else {
-      return (
-        <ListItem dataKey={ this.props.dataKey } primaryText={ this.props.task } onTouchTap={ this.onEditNote } />
-      )
-    }
+    return (
+      <div>
+        { this.state.isEditing ? this.renderEdit() : this.renderTask() }
+      </div>
+    );
   }
 }
