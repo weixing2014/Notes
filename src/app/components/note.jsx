@@ -2,9 +2,9 @@ import React from 'react';
 import ListItem from 'material-ui/lib/lists/list-item';
 import TextField from 'material-ui/lib/text-field';
 import NoteTextField from './note-text-field'
+import Colors from 'material-ui/lib/styles/colors'
 
 export default class Note extends React.Component {
-
 
   constructor(props) {
     super(props);
@@ -41,7 +41,12 @@ export default class Note extends React.Component {
 
   renderTask() {
     return (
-      <ListItem dataKey={ this.props.dataKey } primaryText={ this.props.task } onTouchTap={ this.onEditNote } />
+      <ListItem>
+        <span dataKey={ this.props.dataKey } onTouchTap={ this.onEditNote }>
+          { this.props.task }
+        </span>
+        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" />
+      </ListItem>
     );
   }
 
