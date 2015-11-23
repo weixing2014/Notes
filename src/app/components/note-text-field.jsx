@@ -2,26 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/lib/text-field';
 
-export default class NoteTextField extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.onEditFinish = this.onEditFinish.bind(this);
-  }
-
+const NoteTextField = React.createClass({
   componentDidMount() {
     this.refs.textField.focus();
-  }
+  },
 
-  onEditFinish() {
-    this.props.onEnterKeyDown(this.refs.textField.getValue());
-  }
+  onEnterKeyDown() {
+    const { dataKey, task, onEnterKeyDown } = this.props;
+    onEnterKeyDown({
+      id: dataKey,
+      task: this.refs.textField.getValue(),
+    })
+  },
 
   render() {
+    const { dataKey, task, onEnterKeyDown } = this.props;
     return (
-      <TextField ref="textField" defaultValue={ this.props.task } onEnterKeyDown={ this.onEditFinish } />
+      <TextField
+        ref="textField"
+        defaultValue={ task }
+        dataKey={ dataKey}
+        onEnterKeyDown={ this.onEnterKeyDown } />
     );
-  }
-}
+  },
+})
+
+export default NoteTextField;

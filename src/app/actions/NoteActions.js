@@ -31,11 +31,20 @@ export default {
     reactor.dispatch('ADD_NOTE');
   },
 
-  updateNote({ id, task }) {
-    reactor.dispatch(
-      'UPDATE_NOTE',
-      { id, task }
-    );
+  editNoteDone({ id, task }) {
+    reactor.batch( function() {
+
+      reactor.dispatch(
+        'TOGGLE_NOTE_EDITING',
+        { id: id, isEditing: false },
+      );
+
+      reactor.dispatch(
+        'UPDATE_NOTE',
+        { id, task }
+      );
+
+    })
   },
 
   deleteNote({ id }) {
@@ -45,4 +54,16 @@ export default {
     );
   },
 
+  editNote({ id }) {
+    reactor.dispatch(
+      'TOGGLE_NOTE_EDITING',
+      { id: id, isEditing: true }
+    );
+  },
+
+  addNote() {
+    reactor.dispatch(
+      'ADD_NOTE'
+    );
+  },
 }

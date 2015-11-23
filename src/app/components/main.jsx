@@ -15,6 +15,7 @@ import MenuDivider from 'material-ui/lib/menus/menu-divider';
 import IconButton from 'material-ui/lib/icon-button';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import Colors from 'material-ui/lib/styles/colors';
+import noteActions from '../actions/NoteActions'
 
 const Main = React.createClass({
   render() {
@@ -25,7 +26,7 @@ const Main = React.createClass({
 
     return (
       <div style={containerStyle}>
-        <FlatButton primary={true} onClick={this.addNote} label={"Add Note"} />
+        <FlatButton primary={true} onClick={noteActions.addNote} label={"Add Note"} />
         <Notes />
       </div>
     )

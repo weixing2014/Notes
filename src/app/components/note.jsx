@@ -3,25 +3,17 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import TextField from 'material-ui/lib/text-field';
 import NoteTextField from './note-text-field'
 import Colors from 'material-ui/lib/styles/colors'
+import noteActions from '../actions/NoteActions'
 
 const Note = React.createClass({
-  onEditNote() {
-    this.setState({
-      isEditing: true,
-    });
-  },
-
-  onEditFinish( newTask ) {
-    this.setState({
-      isEditing: false,
-    });
-
-    this.props.onUpdateNote(newTask);
-  },
-
   renderEdit() {
+    const { dataKey, task } = this.props;
     return (
-      <NoteTextField ref={"noteTextField"} task={ this.props.task } onEnterKeyDown={ this.onEditFinish } />
+      <NoteTextField
+        dataKey={ dataKey }
+        task={ task }
+        onEnterKeyDown = { noteActions.editNoteDone }
+        />
     );
   },
 
@@ -29,10 +21,10 @@ const Note = React.createClass({
     const { dataKey, task } = this.props
     return (
       <ListItem>
-        <span dataKey={ dataKey } onTouchTap={ this.onEditNote }>
+        <span dataKey={ dataKey } onClick={ noteActions.editNote.bind(null, { id: dataKey }) }>
           { task }
         </span>
-        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" />
+        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" onClick={ noteActions.deleteNote.bind(null, { id: dataKey }) }/>
       </ListItem>
     );
   },
