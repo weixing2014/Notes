@@ -4,26 +4,12 @@ import TextField from 'material-ui/lib/text-field';
 import NoteTextField from './note-text-field'
 import Colors from 'material-ui/lib/styles/colors'
 
-export default class Note extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isEditing: false,
-    }
-
-    this.onEditNote = this.onEditNote.bind(this);
-    this.onEditFinish = this.onEditFinish.bind(this);
-    this.renderEdit = this.renderEdit.bind(this);
-    this.renderTask = this.renderTask.bind(this);
-  }
-
+const Note = React.createClass({
   onEditNote() {
     this.setState({
       isEditing: true,
     });
-  }
+  },
 
   onEditFinish( newTask ) {
     this.setState({
@@ -31,30 +17,35 @@ export default class Note extends React.Component {
     });
 
     this.props.onUpdateNote(newTask);
-  }
+  },
 
   renderEdit() {
     return (
       <NoteTextField ref={"noteTextField"} task={ this.props.task } onEnterKeyDown={ this.onEditFinish } />
     );
-  }
+  },
 
   renderTask() {
+    const { dataKey, task } = this.props
     return (
       <ListItem>
-        <span dataKey={ this.props.dataKey } onTouchTap={ this.onEditNote }>
-          { this.props.task }
+        <span dataKey={ dataKey } onTouchTap={ this.onEditNote }>
+          { task }
         </span>
         <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" />
       </ListItem>
     );
-  }
+  },
 
   render() {
+    const { isEditing } = this.props
+
     return (
       <div>
-        { this.state.isEditing ? this.renderEdit() : this.renderTask() }
+        { isEditing ? this.renderEdit() : this.renderTask() }
       </div>
     );
-  }
-}
+  },
+});
+
+export default Note;

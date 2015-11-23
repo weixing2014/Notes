@@ -1,21 +1,39 @@
 import React from 'react';
-import Note from './note.jsx'
+import reactor from '../libs/reactor'
+import getters from './../getters'
+import Note from './note.jsx';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 
-export default class Notes extends React.Component {
+
+const Notes = React.createClass({
+
+  mixins: [reactor.ReactMixin],
+
+  getDataBindings() {
+    return {
+      notes: getters.notes,
+    }
+  },
 
   render() {
     return (
       <List>
         {
-          this.props.items.map(
-            note =>  (<Note dataKey={ note.id }
-                              task={ note.task }
-                              onUpdateNote={ this.props.onUpdateNote.bind(null, note.id) }/>)
+          this.state.notes.map(
+            note => (
+              <Note
+                dataKey={ note.get('id') }
+                task={ note.get('task') }
+                isEditing= { note.get('isEditing')}
+                />
+            )
           )
         }
       </List>
     )
-  }
-}
+  },
+
+});
+
+export default Notes;

@@ -1,3 +1,7 @@
+import noteActions from './actions/NoteActions'
+import reactor from './libs/reactor'
+import NoteStore from './stores/NoteStore'
+
 (function () {
   let React = require('react');
   let ReactDOM = require('react-dom');
@@ -15,6 +19,13 @@
 
   // Render the main app react component into the app div.
   // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
+
+  reactor.registerStores({
+    notes: NoteStore,
+  });
+
+  noteActions.fetchNotes();
+
   ReactDOM.render(<Main />, document.getElementById('app'));
 
 })();

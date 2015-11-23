@@ -29,6 +29,7 @@
     "alt": "^0.17.9",
     "material-ui": "^0.13.0",
     "node-uuid": "^1.4.7",
+    "nuclear-js": "^1.2.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-tap-event-plugin": "^0.2.1"
