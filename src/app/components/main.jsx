@@ -9,7 +9,8 @@ import List from 'material-ui/lib/lists/list';
 import ListDivider from 'material-ui/lib/lists/list-divider';
 import ListItem from 'material-ui/lib/lists/list-item';
 import uuid from 'node-uuid';
-import Notes from './notes'
+import Notes from './notes';
+import Lanes from './lanes';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import MenuDivider from 'material-ui/lib/menus/menu-divider';
 import IconButton from 'material-ui/lib/icon-button';
@@ -20,20 +21,11 @@ import noteActions from '../actions/NoteActions';
 
 const Main = React.createClass({
   render() {
-    let containerStyle = {
-      textAlign: 'left',
-      display: 'inline-block',
-      width: '300px',
-    };
 
     return (
       <div ref="kanbanContainer" className="kanban-container">
-        <FlatButton onClick={laneActions.addLane} label={"Add Lane"} style={{display: 'block'}} />
-
-        <div style={containerStyle}>
-          <FlatButton primary={true} onClick={noteActions.addNote} label={"Add Note"} />
-          <Notes />
-        </div>
+        <FlatButton primary={true} onClick={laneActions.addLane} label={"Add Lane"} style={{display: 'block'}} />
+        <Lanes />
       </div>
     )
   },
