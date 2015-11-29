@@ -3,23 +3,7 @@ import uuid from 'node-uuid';
 
 export default {
   fetchNotes() {
-    const notes = [
-      {
-        id: uuid.v4(),
-        task: 'Learn Webpack',
-        isEditing: false,
-      },
-      {
-        id: uuid.v4(),
-        task: 'Learn React',
-        isEditing: false,
-      },
-      {
-        id: uuid.v4(),
-        task: 'Do laundry',
-        isEditing: false,
-      },
-    ];
+    const notes = [];
 
     reactor.dispatch(
       'RECEIVE_NOTES',

@@ -3,7 +3,7 @@ import uuid from 'node-uuid';
 
 export default Store({
   getInitialState() {
-    return toImmutable({});
+    return toImmutable([]);
   },
 
   initialize() {

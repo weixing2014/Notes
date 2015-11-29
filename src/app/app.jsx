@@ -23,9 +23,7 @@ import NoteStore from './stores/NoteStore'
   reactor.registerStores({
     notes: NoteStore,
   });
-
-  noteActions.fetchNotes();
-
+  
   ReactDOM.render(<Main />, document.getElementById('app'));
 
 })();
