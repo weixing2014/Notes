@@ -7,8 +7,8 @@ export default Store({
   },
 
   initialize() {
-    this.on('RECEIVE_LANES', receiveLanes);
     this.on('ADD_LANE', addLane);
+    this.on('RECEIVE_LANES', receiveLanes);
     this.on('DELETE_LANE', deleteLane);
   },
 })
@@ -24,12 +24,13 @@ function deleteLane(state, { id }) {
 function findLaneIndex(state, { id }) {
 }
 
-function addLane(state) {
+function addLane(state, { name }) {
+  const laneName = name || "New Lane";
   const newLane = toImmutable({
     id: uuid.v4(),
-    name: '',
+    name: laneName,
     notes: [],
   })
-
+  
   return state.splice(0, 0, newLane);
 }

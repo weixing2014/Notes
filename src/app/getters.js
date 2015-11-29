@@ -1,3 +1,5 @@
 const notes = ['notes'];
 
-export default { notes }
+const lanes = ['lanes'];
+
+export default { notes, lanes }
