@@ -12,16 +12,11 @@ export default Store({
     this.on('UPDATE_NOTE', updateNote);
     this.on('DELETE_NOTE', deleteNote);
     this.on('TOGGLE_NOTE_EDITING', toggleNoteEditing);
-    this.on('ADD_NOTE', addNote);
   },
 })
 
 function receiveNotes(state, { notes }) {
   return toImmutable(notes);
-}
-
-function addNote(state, { task }) {
-
 }
 
 function deleteNote(state, { id }) {
@@ -52,5 +47,5 @@ function addNote(state) {
     isEditing: true,
   })
 
-  return state.splice(0,0, newNote);
+  return state.splice(0, 0, newNote);
 }
