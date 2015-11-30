@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/lib/text-field';
+import noteActions from '../actions/NoteActions'
 
 const NoteTextField = React.createClass({
   componentDidMount() {
@@ -8,20 +9,20 @@ const NoteTextField = React.createClass({
   },
 
   onEnterKeyDown() {
-    const { dataKey, task, onEnterKeyDown } = this.props;
-    onEnterKeyDown({
-      id: dataKey,
+    const { laneId, noteId } = this.props;
+    noteActions.editNoteDone({
+      laneId: laneId,
+      noteId: noteId,
       task: this.refs.textField.getValue(),
     })
   },
 
   render() {
-    const { dataKey, task, onEnterKeyDown } = this.props;
+    const { task } = this.props;
     return (
       <TextField
         ref="textField"
         defaultValue={ task }
-        dataKey={ dataKey}
         onEnterKeyDown={ this.onEnterKeyDown } />
     );
   },

@@ -18,12 +18,15 @@ export default Store({
 })
 
 function deleteLane(state, { laneId }) {
+  const laneIndex = findLaneIndex(state, { laneId });
+
+  return state.delete(laneIndex);
 }
 
 function findLaneIndex(state, { laneId }) {
-  // return state.findIndex(
-  //   (lane) => lane.get('id') === id
-  // )
+  return state.findIndex(
+    (lane) => lane.get('id') === laneId
+  )
 }
 
 function addLane(state, { name }) {
@@ -34,38 +37,53 @@ function addLane(state, { name }) {
     notes: [],
   })
 
-  return state.splice(0, 0, newLane);
+  return state.push(newLane);
 }
 
 function deleteNote(state, { laneId, noteId }) {
-  // const noteIndex = findNoteIndex(state, { id });
-  // return state.delete(noteIndex);
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+  return state.deleteIn([laneIndex, 'notes', noteIndex]);
 }
 
 function updateNote(state, { laneId, noteId, task }) {
-  // const noteIndex = findNoteIndex(state, { id });
-  // return state.update( noteIndex, (note) => note.set('task', task) );
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+  return state.updateIn(
+    [laneIndex, 'notes', noteIndex],
+    (note) => note.set('task', task)
+  );
 }
 
-function findNoteIndex(state, { laneId, noteId }) {
-  // return state.findIndex(
-  //   (note) => note.get('id') === id
-  // )
+function findLaneAndNoteIndex(state, { laneId, noteId }) {
+  const laneIndex = findLaneIndex(state, { laneId }),
+        noteIndex = state.getIn([laneIndex, 'notes']).findIndex((n) => n.get('id') === noteId);
+
+  return { laneIndex, noteIndex };
 }
 
 function toggleNoteEditing(state, { laneId, noteId, isEditing }) {
-  // const noteIndex = findNoteIndex(state, { id });
-  // return state.update(noteIndex, ( note ) => note.set('isEditing', isEditing) );
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+  return state.updateIn(
+    [laneIndex, 'notes', noteIndex],
+    (note) => note.set('isEditing', isEditing)
+  );
 }
 
 function addNote( state, { laneId } ) {
-  const noteId = uuid.v4();
+  const noteId = uuid.v4(),
+     laneIndex = findLaneIndex(state, { laneId }),
+       newNote = toImmutable({
+         id: noteId,
+         task: '',
+         isEditing: true,
+       })
 
-  const newNote = toImmutable({
-    id: noteId,
-    task: '',
-    isEditing: true,
-  })
+  const newState = state.updateIn(
+    [laneIndex, 'notes'],
+    function(notes) {
+      return notes.splice(0, 0, newNote);
+    }
+  )
 
-  return state.splice(0, 0, newNote);
+
+  return newState;
 }

@@ -27,7 +27,8 @@ const Notes = React.createClass({
           notes.map(
             note => (
               <Note
-                dataKey={ note.get('id') }
+                laneId = { laneId }
+                noteId={ note.get('id') }
                 task={ note.get('task') }
                 isEditing= { note.get('isEditing')}
                 />

@@ -7,24 +7,24 @@ import noteActions from '../actions/NoteActions'
 
 const Note = React.createClass({
   renderEdit() {
-    const { dataKey, task } = this.props;
+    const { laneId, noteId, task } = this.props;
     return (
       <NoteTextField
-        dataKey={ dataKey }
+        laneId={ laneId }
+        noteId={ noteId }
         task={ task }
-        onEnterKeyDown = { noteActions.editNoteDone }
         />
     );
   },
 
   renderTask() {
-    const { dataKey, task } = this.props
+    const { laneId, noteId, task } = this.props
     return (
       <ListItem>
-        <span dataKey={ dataKey } onClick={ noteActions.editNote.bind(null, { id: dataKey }) }>
+        <span noteId={ noteId } laneId={ laneId } onClick={ noteActions.editNote.bind(null, { laneId, noteId }) }>
           { task }
         </span>
-        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" onClick={ noteActions.deleteNote.bind(null, { id: dataKey }) }/>
+        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" onClick={ noteActions.deleteNote.bind(null, { laneId, noteId }) }/>
       </ListItem>
     );
   },
