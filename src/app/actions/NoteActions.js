@@ -2,52 +2,52 @@ import reactor from '../libs/reactor';
 import uuid from 'node-uuid';
 
 export default {
-  fetchNotes() {
-    const notes = [];
-
+  addNote({ laneId }) {
     reactor.dispatch(
-      'RECEIVE_NOTES',
-      { notes }
+      'ADD_NOTE',
+      { laneId }
     );
   },
 
-  addNote({ task }) {
-    reactor.dispatch('ADD_NOTE');
-  },
-
-  editNoteDone({ id, task }) {
+  editNoteDone({ laneId, noteId, task }) {
     reactor.batch( function() {
 
       reactor.dispatch(
         'TOGGLE_NOTE_EDITING',
-        { id: id, isEditing: false },
+        {
+          laneId: laneId,
+          noteId: noteId,
+          isEditing: false,
+        },
       );
 
       reactor.dispatch(
         'UPDATE_NOTE',
-        { id, task }
+        {
+          laneId: laneId,
+          noteId: noteId,
+          task: task,
+        }
       );
 
     })
   },
 
-  deleteNote({ id }) {
+  deleteNote({ laneId, noteId }) {
     reactor.dispatch(
       'DELETE_NOTE',
-      { id }
+      { laneId, noteId }
     );
   },
 
-  editNote({ id }) {
+  editNote({ laneId, noteId }) {
     reactor.dispatch(
       'TOGGLE_NOTE_EDITING',
-      { id: id, isEditing: true }
-    );
-  },
-
-  addNote() {
-    reactor.dispatch(
-      'ADD_NOTE'
+      {
+        laneId: laneId,
+        noteId: noteId,
+        isEditing: true,
+      }
     );
   },
 }

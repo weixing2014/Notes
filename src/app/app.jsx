@@ -1,7 +1,6 @@
 import noteActions from './actions/NoteActions'
 import reactor from './libs/reactor'
-import NoteStore from './stores/NoteStore'
-import LaneStore from './stores/LaneStore'
+import Store from './stores/Store'
 
 (function () {
   let React = require('react');
@@ -22,8 +21,7 @@ import LaneStore from './stores/LaneStore'
   // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
 
   reactor.registerStores({
-    notes: NoteStore,
-    lanes: LaneStore,
+    lanes: Store,
   });
 
   ReactDOM.render(<Main />, document.getElementById('app'));

@@ -2,14 +2,13 @@ import React from 'react';
 import Colors from 'material-ui/lib/styles/colors';
 import FlatButton from 'material-ui/lib/flat-button';
 import noteActions from '../actions/NoteActions';
-import laneActions from '../actions/LaneActions';
 import Notes from './notes';
 
 const Lane = React.createClass({
 
   render() {
 
-    const { dataKey, name } = this.props;
+    const { laneId, name } = this.props;
 
     let containerStyle = {
       textAlign: 'left',
@@ -18,10 +17,10 @@ const Lane = React.createClass({
     };
 
     return (
-      <div dataKey={dataKey} style={containerStyle}>
+      <div dataKey={laneId} style={containerStyle}>
         <div>{name}</div>
-        <FlatButton primary={true} onClick={noteActions.addNote} label={"Add Note"} />
-        <Notes />
+        <FlatButton primary={true} onClick={noteActions.addNote.bind({ laneId })} label={"Add Note"} />
+        <Notes laneId={laneId} />
       </div>
     );
   },

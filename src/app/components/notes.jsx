@@ -12,15 +12,19 @@ const Notes = React.createClass({
 
   getDataBindings() {
     return {
-      notes: getters.notes,
+      lanes: getters.lanes,
     }
   },
 
   render() {
+    const { laneId } = this.props;
+    const laneIndex = this.state.lanes.findIndex((lane) => lane.get('id') === laneId);
+    const notes = this.state.lanes.get(laneIndex).get('notes');
+
     return (
       <List>
         {
-          this.state.notes.map(
+          notes.map(
             note => (
               <Note
                 dataKey={ note.get('id') }

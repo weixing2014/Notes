@@ -20,7 +20,7 @@ const Lanes = React.createClass({
           this.state.lanes.map(
             lane => (
               <Lane
-                dataKey={ lane.get('id') }
+                laneId={ lane.get('id') }
                 name={ lane.get('name') }
                 />
             )

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import reactor from '../libs/reactor'
-import CartStore from './../stores/NoteStore'
+import CartStore from './../stores/Store'
 
 import FlatButton from 'material-ui/lib/flat-button';
 import List from 'material-ui/lib/lists/list';
@@ -16,8 +16,8 @@ import MenuDivider from 'material-ui/lib/menus/menu-divider';
 import IconButton from 'material-ui/lib/icon-button';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import Colors from 'material-ui/lib/styles/colors';
-import laneActions from '../actions/LaneActions';
 import noteActions from '../actions/NoteActions';
+import laneActions from '../actions/LaneActions';
 
 const Main = React.createClass({
   render() {
