@@ -50,4 +50,16 @@ export default {
       }
     );
   },
+
+  moveAround({ sourceLaneId, sourceNoteId, targetLaneId, targetNoteId }) {
+    reactor.dispatch(
+      'MOVE_NOTE_AROUND',
+      {
+        sourceLaneId,
+        sourceNoteId,
+        targetLaneId,
+        targetNoteId,
+      }
+    );
+  },
 }

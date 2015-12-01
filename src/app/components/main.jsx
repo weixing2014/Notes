@@ -18,6 +18,8 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import Colors from 'material-ui/lib/styles/colors';
 import noteActions from '../actions/NoteActions';
 import laneActions from '../actions/LaneActions';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 const Main = React.createClass({
   render() {
@@ -32,4 +34,4 @@ const Main = React.createClass({
 
 })
 
-export default Main;
+export default DragDropContext(HTML5Backend)(Main);

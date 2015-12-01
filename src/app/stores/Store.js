@@ -14,6 +14,8 @@ export default Store({
     this.on('UPDATE_NOTE', updateNote);
     this.on('DELETE_NOTE', deleteNote);
     this.on('TOGGLE_NOTE_EDITING', toggleNoteEditing);
+
+    this.on('MOVE_NOTE_AROUND', moveNoteAround);
   },
 })
 
@@ -86,4 +88,24 @@ function addNote( state, { laneId } ) {
 
 
   return newState;
+}
+
+function moveNoteAround( state, { sourceLaneId, sourceNoteId, targetLaneId, targetNoteId }) {
+  if (sourceNoteId !== targetNoteId) {
+    const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { laneId: sourceLaneId, noteId: sourceNoteId });
+    const sourceLaneIndex = sourceLandAndNoteIndexes.laneIndex;
+    const sourceNoteIndex = sourceLandAndNoteIndexes.noteIndex;
+    const sourceNote = state.getIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
+    const stateWithoutSourceNote = state.deleteIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
+
+    const targetLandAndNoteIndexes = findLaneAndNoteIndex(stateWithoutSourceNote, { laneId: targetLaneId, noteId: targetNoteId });
+    const targetLaneIndex = targetLandAndNoteIndexes.laneIndex;
+    const targetNoteIndex = targetLandAndNoteIndexes.noteIndex;
+
+    return stateWithoutSourceNote.updateIn([targetLaneIndex, 'notes'], function(notes) {
+      return notes.splice( targetNoteIndex + 1, 0, sourceNote);
+    });
+  } else {
+    return state;
+  }
 }
