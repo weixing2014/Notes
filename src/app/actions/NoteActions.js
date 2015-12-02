@@ -9,13 +9,12 @@ export default {
     );
   },
 
-  editNoteDone({ laneId, noteId, task }) {
+  editNoteDone({noteId, task}) {
     reactor.batch( function() {
 
       reactor.dispatch(
         'TOGGLE_NOTE_EDITING',
         {
-          laneId: laneId,
           noteId: noteId,
           isEditing: false,
         },
@@ -24,7 +23,6 @@ export default {
       reactor.dispatch(
         'UPDATE_NOTE',
         {
-          laneId: laneId,
           noteId: noteId,
           task: task,
         }
@@ -33,31 +31,28 @@ export default {
     })
   },
 
-  deleteNote({ laneId, noteId }) {
+  deleteNote({ noteId }) {
     reactor.dispatch(
       'DELETE_NOTE',
-      { laneId, noteId }
+      { noteId }
     );
   },
 
-  editNote({ laneId, noteId }) {
+  editNote({ noteId }) {
     reactor.dispatch(
       'TOGGLE_NOTE_EDITING',
       {
-        laneId: laneId,
         noteId: noteId,
         isEditing: true,
       }
     );
   },
 
-  moveAround({ sourceLaneId, sourceNoteId, targetLaneId, targetNoteId }) {
+  moveAround({ sourceNoteId, targetNoteId }) {
     reactor.dispatch(
       'MOVE_NOTE_AROUND',
       {
-        sourceLaneId,
         sourceNoteId,
-        targetLaneId,
         targetNoteId,
       }
     );

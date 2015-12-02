@@ -25,10 +25,16 @@ function deleteLane(state, { laneId }) {
   return state.delete(laneIndex);
 }
 
-function findLaneIndex(state, { laneId }) {
-  return state.findIndex(
-    (lane) => lane.get('id') === laneId
-  )
+function findLaneIndex(state, { laneId, noteId }) {
+  if (laneId) {
+    return state.findIndex(
+      (lane) => lane.get('id') === laneId
+    )
+  } else if (noteId) {
+    return state.findIndex(
+      lane => lane.get('notes').map(x => x.get('id')).includes(noteId)
+    );
+  }
 }
 
 function addLane(state, { name }) {
@@ -55,15 +61,15 @@ function updateNote(state, { laneId, noteId, task }) {
   );
 }
 
-function findLaneAndNoteIndex(state, { laneId, noteId }) {
-  const laneIndex = findLaneIndex(state, { laneId }),
+function findLaneAndNoteIndex(state, { noteId }) {
+  const laneIndex = findLaneIndex(state, { noteId }),
         noteIndex = state.getIn([laneIndex, 'notes']).findIndex((n) => n.get('id') === noteId);
 
   return { laneIndex, noteIndex };
 }
 
 function toggleNoteEditing(state, { laneId, noteId, isEditing }) {
-  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
   return state.updateIn(
     [laneIndex, 'notes', noteIndex],
     (note) => note.set('isEditing', isEditing)
@@ -90,15 +96,17 @@ function addNote( state, { laneId } ) {
   return newState;
 }
 
-function moveNoteAround( state, { sourceLaneId, sourceNoteId, targetLaneId, targetNoteId }) {
+function moveNoteAround( state, { sourceNoteId, targetNoteId }) {
   if (sourceNoteId !== targetNoteId) {
-    const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { laneId: sourceLaneId, noteId: sourceNoteId });
+
+    const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: sourceNoteId });
     const sourceLaneIndex = sourceLandAndNoteIndexes.laneIndex;
     const sourceNoteIndex = sourceLandAndNoteIndexes.noteIndex;
+
     const sourceNote = state.getIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
     const stateWithoutSourceNote = state.deleteIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
 
-    const targetLandAndNoteIndexes = findLaneAndNoteIndex(stateWithoutSourceNote, { laneId: targetLaneId, noteId: targetNoteId });
+    const targetLandAndNoteIndexes = findLaneAndNoteIndex(stateWithoutSourceNote, { noteId: targetNoteId });
     const targetLaneIndex = targetLandAndNoteIndexes.laneIndex;
     const targetNoteIndex = targetLandAndNoteIndexes.noteIndex;
 

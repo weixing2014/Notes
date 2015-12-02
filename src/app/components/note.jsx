@@ -13,7 +13,6 @@ const noteSource = {
     console.log('Dragging...', props);
 
     return {
-      laneId: props.laneId,
       noteId: props.noteId,
     };
   },
@@ -23,15 +22,11 @@ const noteTarget = {
   hover(targetProps, monitor) {
     const sourceProps = monitor.getItem();
 
-    const targetLaneId = targetProps.laneId;
     const targetNoteId = targetProps.noteId;
-    const sourceLaneId = sourceProps.laneId;
     const sourceNoteId = sourceProps.noteId;
 
     noteActions.moveAround({
-      targetLaneId,
       targetNoteId,
-      sourceLaneId,
       sourceNoteId,
     })
   },
@@ -39,10 +34,9 @@ const noteTarget = {
 
 const Note = React.createClass({
   renderEdit() {
-    const { laneId, noteId, task } = this.props;
+    const { noteId, task } = this.props;
     return (
       <NoteTextField
-        laneId={ laneId }
         noteId={ noteId }
         task={ task }
         />
@@ -50,13 +44,20 @@ const Note = React.createClass({
   },
 
   renderTask() {
-    const { laneId, noteId, task } = this.props
+    const { noteId, task } = this.props
     return (
       <div>
-        <span noteId={ noteId } laneId={ laneId } onClick={ noteActions.editNote.bind(null, { laneId, noteId }) }>
-          { task }
+        <span
+          noteId={noteId}
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          >
+          {task}
         </span>
-        <span style={{ marginLeft: '5px', color: Colors.red500 }} className="fa fa-times" onClick={ noteActions.deleteNote.bind(null, { laneId, noteId }) }/>
+        <span
+          style={{marginLeft: '5px', color: Colors.red500}}
+          className="fa fa-times"
+          onClick={noteActions.deleteNote.bind(null, {noteId})}
+          />
       </div>
     );
   },
