@@ -2,6 +2,7 @@ import React from 'react';
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import Lane from './lane.jsx';
+import noteActions from '../actions/NoteActions';
 
 const Lanes = React.createClass({
 
@@ -12,6 +13,15 @@ const Lanes = React.createClass({
       lanes: getters.lanes,
     }
   },
+
+  componentDidMount() {
+    noteActions.persist();
+  },
+
+  componentDidUpdate() {
+    noteActions.persist();
+  },
+
 
   render() {
     return (

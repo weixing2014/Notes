@@ -1,5 +1,6 @@
 import reactor from '../libs/reactor';
 import uuid from 'node-uuid';
+import localforage from 'localforage';
 
 export default {
   addNote({ laneId }) {
@@ -56,5 +57,23 @@ export default {
         targetNoteId,
       }
     );
+  },
+
+  persist() {
+    const appState = reactor.evaluate(['lanes']).toJS();
+
+    localforage.setItem('kanbanAppState', appState);
+    // localforage.getItem('kanbanAppState', function(err, value) { console.log(value) });
+  },
+
+  fetchAppState() {
+    localforage.getItem('kanbanAppState', function(err, value) {
+      reactor.dispatch(
+        'RECEIVE_APP_STATE',
+        {
+          appState: value,
+        }
+      );
+    });
   },
 }

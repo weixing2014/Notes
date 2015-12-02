@@ -22,6 +22,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 const Main = React.createClass({
+
   render() {
 
     return (

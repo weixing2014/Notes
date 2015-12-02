@@ -24,6 +24,8 @@ import Store from './stores/Store'
     lanes: Store,
   });
 
+  noteActions.fetchAppState();
+
   ReactDOM.render(<Main />, document.getElementById('app'));
 
 })();
