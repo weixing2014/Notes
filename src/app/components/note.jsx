@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import _ from 'lodash';
 import ListItem from 'material-ui/lib/lists/list-item';
 import TextField from 'material-ui/lib/text-field';
@@ -7,11 +8,10 @@ import Colors from 'material-ui/lib/styles/colors'
 import noteActions from '../actions/NoteActions'
 import {DragSource, DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/item-types'
+import Paper from 'material-ui/lib/paper';
 
 const noteSource = {
   beginDrag(props) {
-    console.log('Dragging...', props);
-
     return {
       noteId: props.noteId,
     };
@@ -19,15 +19,21 @@ const noteSource = {
 }
 
 const noteTarget = {
-  hover(targetProps, monitor) {
+  hover(targetProps, monitor, component) {
     const sourceProps = monitor.getItem();
 
     const targetNoteId = targetProps.noteId;
     const sourceNoteId = sourceProps.noteId;
 
+    const hoverBoundingRect = ReactDOM.findDOMNode(component).getBoundingClientRect();
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+    const clientOffset = monitor.getClientOffset();
+    const isAbove = clientOffset.y - hoverBoundingRect.top > hoverBoundingRect.bottom - clientOffset.y
+
     noteActions.moveAround({
       targetNoteId,
       sourceNoteId,
+      isAbove,
     })
   },
 }
@@ -36,29 +42,23 @@ const Note = React.createClass({
   renderEdit() {
     const { noteId, task } = this.props;
     return (
-      <NoteTextField
-        noteId={ noteId }
-        task={ task }
-        />
+      <Paper zDepth={1} style={{margin: '10px', padding: '10px'}}>
+        <NoteTextField
+          noteId={ noteId }
+          task={ task }
+          />
+      </Paper>
     );
   },
 
   renderTask() {
     const { noteId, task } = this.props
     return (
-      <div>
-        <span
-          noteId={noteId}
-          onClick={noteActions.editNote.bind(null, {noteId})}
-          >
+      <Paper zDepth={1} style={{margin: '10px', padding: '10px'}}>
+        <div onClick={noteActions.editNote.bind(null, {noteId})}>
           {task}
-        </span>
-        <span
-          style={{marginLeft: '5px', color: Colors.red500}}
-          className="fa fa-times"
-          onClick={noteActions.deleteNote.bind(null, {noteId})}
-          />
-      </div>
+        </div>
+      </Paper>
     );
   },
 

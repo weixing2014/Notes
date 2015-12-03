@@ -49,12 +49,13 @@ export default {
     );
   },
 
-  moveAround({ sourceNoteId, targetNoteId }) {
+  moveAround({ sourceNoteId, targetNoteId, isAbove }) {
     reactor.dispatch(
       'MOVE_NOTE_AROUND',
       {
         sourceNoteId,
         targetNoteId,
+        isAbove,
       }
     );
   },
@@ -63,7 +64,6 @@ export default {
     const appState = reactor.evaluate(['lanes']).toJS();
 
     localforage.setItem('kanbanAppState', appState);
-    // localforage.getItem('kanbanAppState', function(err, value) { console.log(value) });
   },
 
   fetchAppState() {

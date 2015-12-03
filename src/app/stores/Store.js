@@ -102,7 +102,7 @@ function addNote( state, { laneId } ) {
   return newState;
 }
 
-function moveNoteAround( state, { sourceNoteId, targetNoteId }) {
+function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
   if (sourceNoteId !== targetNoteId) {
 
     const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: sourceNoteId });
@@ -117,7 +117,7 @@ function moveNoteAround( state, { sourceNoteId, targetNoteId }) {
     const targetNoteIndex = targetLandAndNoteIndexes.noteIndex;
 
     return stateWithoutSourceNote.updateIn([targetLaneIndex, 'notes'], function(notes) {
-      return notes.splice( targetNoteIndex + 1, 0, sourceNote);
+      return notes.splice( targetNoteIndex + (isAbove ? 0 : 1), 0, sourceNote);
     });
   } else {
     return state;

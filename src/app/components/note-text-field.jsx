@@ -23,6 +23,8 @@ const NoteTextField = React.createClass({
       <TextField
         ref="textField"
         defaultValue={ task }
+        multiLine={true}
+        style={{width: '200px'}}
         onEnterKeyDown={ this.onEnterKeyDown } />
     );
   },
