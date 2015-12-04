@@ -83,6 +83,7 @@ function toggleNoteEditing(state, { laneId, noteId, isEditing }) {
 }
 
 function addNote( state, { laneId } ) {
+
   const noteId = uuid.v4(),
      laneIndex = findLaneIndex(state, { laneId }),
        newNote = toImmutable({
@@ -90,14 +91,13 @@ function addNote( state, { laneId } ) {
          task: '',
          isEditing: true,
        })
-
+       
   const newState = state.updateIn(
     [laneIndex, 'notes'],
     function(notes) {
-      return notes.splice(0, 0, newNote);
+      return notes.push(newNote);
     }
   )
-
 
   return newState;
 }

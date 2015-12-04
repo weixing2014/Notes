@@ -10,7 +10,17 @@ export default {
     );
   },
 
-  editNoteDone({noteId, task}) {
+  toggleNoteEditing({ noteId, isEditing }) {
+    reactor.dispatch(
+      'TOGGLE_NOTE_EDITING',
+      {
+        noteId: noteId,
+        isEditing: false,
+      },
+    );
+  },
+
+  editNoteDone({laneId, noteId, task}) {
     reactor.batch( function() {
 
       reactor.dispatch(
@@ -26,6 +36,13 @@ export default {
         {
           noteId: noteId,
           task: task,
+        }
+      );
+
+      reactor.dispatch(
+        'ADD_NOTE',
+        {
+          laneId: laneId,
         }
       );
 

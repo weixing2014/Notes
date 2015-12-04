@@ -6,3 +6,17 @@ body {
   font-size: 13px;
   line-height: 20px;
 }
+
+.note__container:hover {
+  cursor: pointer;
+}
+
+.note__container .note__delete-icon,
+.note__container .note__edit-icon {
+  visibility: hidden;
+}
+
+.note__container:hover .note__delete-icon,
+.note__container:hover .note__edit-icon {
+  visibility: visible;
+}

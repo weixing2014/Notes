@@ -9,6 +9,7 @@ import noteActions from '../actions/NoteActions'
 import {DragSource, DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/item-types'
 import Paper from 'material-ui/lib/paper';
+import Icon from './icon'
 
 const noteSource = {
   beginDrag(props) {
@@ -38,12 +39,23 @@ const noteTarget = {
   },
 }
 
+const styles = {
+  icon: {
+    position: 'absolute',
+    top: '12px',
+    fontSize: '1.2em',
+    cursor: 'pointer',
+    color: '#9e9e9e',
+  },
+}
+
 const Note = React.createClass({
   renderEdit() {
-    const { noteId, task } = this.props;
+    const { laneId, noteId, task } = this.props;
     return (
       <Paper zDepth={1} style={{margin: '10px', padding: '10px'}}>
         <NoteTextField
+          laneId = { laneId }
           noteId={ noteId }
           task={ task }
           />
@@ -54,10 +66,32 @@ const Note = React.createClass({
   renderTask() {
     const { noteId, task } = this.props
     return (
-      <Paper zDepth={1} style={{margin: '10px', padding: '10px'}}>
-        <div onClick={noteActions.editNote.bind(null, {noteId})}>
+      <Paper className='note__container' zDepth={1} style={{margin: '10px', padding: '10px', position: 'relative'}}>
+        <div
+          style={{marginRight: '25px'}}
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          >
           {task}
         </div>
+        <Icon
+          iconName='pencil-square-o'
+          className='note__edit-icon'
+          style={_.extend(
+            {},
+            styles.icon,
+            {right: '20px'},
+          )}
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          />
+        <span
+          className='fa fa-trash-o note__delete-icon'
+          style={_.extend(
+            {},
+            styles.icon,
+            {right: '5px'},
+          )}
+          onClick={noteActions.deleteNote.bind(null, {noteId})}
+        />
       </Paper>
     );
   },
