@@ -26,16 +26,18 @@ const noteTarget = {
     const targetNoteId = targetProps.noteId;
     const sourceNoteId = sourceProps.noteId;
 
-    const hoverBoundingRect = ReactDOM.findDOMNode(component).getBoundingClientRect();
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-    const clientOffset = monitor.getClientOffset();
-    const isAbove = clientOffset.y - hoverBoundingRect.top > hoverBoundingRect.bottom - clientOffset.y
+    if( targetNoteId !== sourceNoteId ) {
+      const hoverBoundingRect = ReactDOM.findDOMNode(component).getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const isAbove = clientOffset.y - hoverBoundingRect.top < hoverBoundingRect.bottom - clientOffset.y
 
-    noteActions.moveAround({
-      targetNoteId,
-      sourceNoteId,
-      isAbove,
-    })
+      noteActions.moveAround({
+        targetNoteId,
+        sourceNoteId,
+        isAbove,
+      })
+    }
   },
 }
 
@@ -99,8 +101,10 @@ const Note = React.createClass({
   render() {
     const { connectDragSource, connectDropTarget, isDragging, isEditing } = this.props;
 
+    const opacity = isDragging? 0.1 : 1;
+
     return connectDragSource(connectDropTarget(
-      <div>
+      <div style={{opacity}}>
         { isEditing ? this.renderEdit() : this.renderTask() }
       </div>
     ));
