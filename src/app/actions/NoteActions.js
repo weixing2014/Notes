@@ -21,7 +21,10 @@ export default {
   },
 
   postNewNote({laneId, noteId, task}) {
-    reactor.dispatch('UPDATE_NOTE', { noteId: noteId, task: task, status: 'posted' });
+    reactor.batch( function() {
+      reactor.dispatch('UPDATE_NOTE', { noteId: noteId, task: task, status: 'posted' });
+      reactor.dispatch('ADD_NOTE', { laneId });
+    })
   },
 
   postEditingNote({laneId, noteId, task}) {

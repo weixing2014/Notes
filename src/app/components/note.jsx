@@ -57,10 +57,10 @@ const styles = {
 
 const Note = React.createClass({
   renderEdit() {
-    const { noteId, task, status } = this.props;
+    const { laneId, noteId, task, status } = this.props;
     return (
       <Paper zDepth={1} style={{margin: '0 10px', padding: '10px'}}>
-        <NoteTextField noteId={noteId} task={task} status={status} />
+        <NoteTextField laneId={laneId} noteId={noteId} task={task} status={status} />
       </Paper>
     );
   },

@@ -19,9 +19,10 @@ const NoteTextField = React.createClass({
   },
 
   updateNote() {
-    const { noteId, status } = this.props;
+    const { laneId, noteId, status } = this.props;
     if (this.refs.textField.getValue()) {
       const note = {
+        laneId: laneId,
         noteId: noteId,
         task: this.refs.textField.getValue(),
       }
@@ -38,7 +39,7 @@ const NoteTextField = React.createClass({
     }
   },
 
-  cancelPostingNote() {
+  cancelPostingNote(event) {
     const { noteId, status } = this.props;
 
     if ( status === 'new' ) {

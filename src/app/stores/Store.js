@@ -47,6 +47,7 @@ function addLane(state, { name }) {
   const newLane = toImmutable({
     id: uuid.v4(),
     name: laneName,
+    status: 'new',
     notes: [
       {
         id: uuid.v4(),

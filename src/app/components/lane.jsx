@@ -10,6 +10,7 @@ import CardTitle from 'material-ui/lib/card/card-title';
 import Avatar from 'material-ui/lib/avatar';
 import Colors from 'material-ui/lib/styles/colors';
 import FlatButton from 'material-ui/lib/flat-button';
+import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions';
 import laneActions from '../actions/LaneActions';
 import Icon from './icon'
@@ -33,11 +34,44 @@ const styles = {
 }
 
 const Lane = React.createClass({
+  updateLaneName() {
+
+  },
+
+  cancelUpdatingLaneName() {
+
+  },
+
+  selectText(e) {
+    e.target.select();
+  },
+
+  renderEditingName() {
+    const { name, status } = this.props;
+    return (
+      <span className="hhh">
+        <TextField
+          defaultValue={ name }
+          style={{width: '200px'}}
+          onFocus={this.selectText}
+          onEnterKeyDown={this.updateLaneName()}
+          onBlur={this.cancelUpdatingLaneName()}
+          />
+      </span>
+    );
+  },
+
+  renderName() {
+    const { name } = this.props;
+
+    return (
+      <span style={{fontSize: '16px'}}>{name}</span>
+    );
+  },
 
   render() {
 
-    const { laneId, name } = this.props;
-
+    const { laneId, name, status } = this.props;
 
     return (
       <Card
@@ -46,9 +80,9 @@ const Lane = React.createClass({
         style={styles.container}
         >
         <CardHeader
-          title={name}
+          title={ status === 'new' || status === 'editing' ? this.renderEditingName() : this.renderName()}
           avatar={<Avatar style={{display:'none'}} />}
-          style={{height: '40px'}}
+          style={{height: '40px', padding: '0 16px'}}
           >
           <Icon
             iconName='plus-square-o'
