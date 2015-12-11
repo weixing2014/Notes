@@ -30,7 +30,7 @@ const Notes = React.createClass({
                 laneId={ laneId }
                 noteId={ note.get('id') }
                 task={ note.get('task') }
-                isEditing= { note.get('isEditing')}
+                status= { note.get('status')}
                 />
             )
           )

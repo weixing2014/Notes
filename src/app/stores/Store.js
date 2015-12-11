@@ -15,7 +15,6 @@ export default Store({
     this.on('ADD_NOTE', addNote);
     this.on('UPDATE_NOTE', updateNote);
     this.on('DELETE_NOTE', deleteNote);
-    this.on('TOGGLE_NOTE_EDITING', toggleNoteEditing);
 
     this.on('MOVE_NOTE_AROUND', moveNoteAround);
   },
@@ -48,7 +47,13 @@ function addLane(state, { name }) {
   const newLane = toImmutable({
     id: uuid.v4(),
     name: laneName,
-    notes: [],
+    notes: [
+      {
+        id: uuid.v4(),
+        task: '',
+        status: 'new',
+      },
+    ],
   })
 
   return state.push(newLane);
@@ -59,11 +64,16 @@ function deleteNote(state, { laneId, noteId }) {
   return state.deleteIn([laneIndex, 'notes', noteIndex]);
 }
 
-function updateNote(state, { laneId, noteId, task }) {
-  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+function updateNote(state, { noteId, task, status }) {
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
   return state.updateIn(
     [laneIndex, 'notes', noteIndex],
-    (note) => note.set('task', task)
+    function(note) {
+      let newNote = note;
+      if (task) newNote = newNote.set('task', task);
+      if (status) newNote = newNote.set('status', status);
+      return newNote;
+    }
   );
 }
 
@@ -74,22 +84,21 @@ function findLaneAndNoteIndex(state, { noteId }) {
   return { laneIndex, noteIndex };
 }
 
-function toggleNoteEditing(state, { laneId, noteId, isEditing }) {
+function toggleNoteStatus(state, { laneId, noteId, status }) {
   const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
   return state.updateIn(
     [laneIndex, 'notes', noteIndex],
-    (note) => note.set('isEditing', isEditing)
+    (note) => note.set('status', status)
   );
 }
 
 function addNote( state, { laneId } ) {
-
   const noteId = uuid.v4(),
      laneIndex = findLaneIndex(state, { laneId }),
        newNote = toImmutable({
          id: noteId,
          task: '',
-         isEditing: true,
+         status: 'new',
        })
 
   const newState = state.updateIn(

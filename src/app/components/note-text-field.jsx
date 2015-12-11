@@ -18,15 +18,19 @@ const NoteTextField = React.createClass({
     this.refs.textField.focus();
   },
 
-  onEditDone(event) {
-    event.preventDefault();
-    const { laneId, noteId } = this.props;
+  updateNote() {
+    const { noteId, status } = this.props;
     if (this.refs.textField.getValue()) {
-      noteActions.editNoteDone({
-        laneId: laneId,
+      const note = {
         noteId: noteId,
         task: this.refs.textField.getValue(),
-      })
+      }
+
+      if ( status === 'new' ) {
+        noteActions.postNewNote(note);
+      } else if ( status === 'editing' ) {
+        noteActions.postEditingNote(note);
+      }
     } else {
       noteActions.deleteNote({
         noteId: noteId,
@@ -34,34 +38,37 @@ const NoteTextField = React.createClass({
     }
   },
 
-  onLoseFocus(event) {
-    const { laneId, noteId } = this.props;
+  cancelPostingNote() {
+    const { noteId, status } = this.props;
 
-    const laneIndex = this.state.lanes.findIndex(lane => lane.get('id') === laneId );
-    const noteIndex = this.state.lanes.getIn([laneIndex, 'notes']).findIndex(note => note.get('id') === noteId);
-
-    if(this.state.lanes.getIn([laneIndex, 'notes', noteIndex, 'task'])) {
-      noteActions.toggleNoteEditing({
-        noteId: noteId,
-        isEditing: false,
-      });
-    } else {
+    if ( status === 'new' ) {
       noteActions.deleteNote({
         noteId: noteId,
       })
+    } else if ( status === 'editing' ){
+      noteActions.postEditingNote({
+        noteId: noteId,
+        status: 'edited',
+      })
     }
+  },
+
+  postNote(event) {
+    event.preventDefault();
+    this.updateNote();
   },
 
   render() {
-    const { task } = this.props;
+    const { task, status } = this.props;
     return (
       <TextField
         ref="textField"
         defaultValue={ task }
         multiLine={true}
-        style={{width: '200px'}}
-        onEnterKeyDown={ this.onEditDone }
-        onBlur={ this.onLoseFocus } />
+        style={{width: '200px', fontSize:'14px'}}
+        onEnterKeyDown={ this.postNote }
+        onBlur={ this.cancelPostingNote }
+        />
     );
   },
 })

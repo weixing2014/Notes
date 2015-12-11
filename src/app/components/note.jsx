@@ -57,14 +57,10 @@ const styles = {
 
 const Note = React.createClass({
   renderEdit() {
-    const { laneId, noteId, task } = this.props;
+    const { noteId, task, status } = this.props;
     return (
-      <Paper zDepth={1} style={{margin: '10px', padding: '10px'}}>
-        <NoteTextField
-          laneId = { laneId }
-          noteId={ noteId }
-          task={ task }
-          />
+      <Paper zDepth={1} style={{margin: '0 10px', padding: '10px'}}>
+        <NoteTextField noteId={noteId} task={task} status={status} />
       </Paper>
     );
   },
@@ -72,7 +68,7 @@ const Note = React.createClass({
   renderTask() {
     const { noteId, task } = this.props
     return (
-      <Paper className='note__container' zDepth={1} style={{margin: '10px', padding: '10px', position: 'relative'}}>
+      <Paper className='note__container' zDepth={1} style={{margin: '0 10px', padding: '10px', position: 'relative'}}>
         <div
           style={{marginRight: '25px'}}
           onClick={noteActions.editNote.bind(null, {noteId})}
@@ -103,13 +99,13 @@ const Note = React.createClass({
   },
 
   render() {
-    const { connectDragSource, connectDropTarget, isDragging, isEditing } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, status } = this.props;
 
     const opacity = isDragging? 0 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div style={{opacity}}>
-        { isEditing ? this.renderEdit() : this.renderTask() }
+      <div style={{opacity: opacity, padding: '5px 0'}}>
+        { (status === 'new' || status === 'editing') ? this.renderEdit() : this.renderTask() }
       </div>
     ));
   },

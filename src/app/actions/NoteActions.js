@@ -10,43 +10,22 @@ export default {
     );
   },
 
-  toggleNoteEditing({ noteId, isEditing }) {
+  toggleNoteStatus({ noteId, status }) {
     reactor.dispatch(
-      'TOGGLE_NOTE_EDITING',
+      'UPDATE_NOTE',
       {
         noteId: noteId,
-        isEditing: false,
+        status: status,
       },
     );
   },
 
-  editNoteDone({laneId, noteId, task}) {
-    reactor.batch( function() {
+  postNewNote({laneId, noteId, task}) {
+    reactor.dispatch('UPDATE_NOTE', { noteId: noteId, task: task, status: 'posted' });
+  },
 
-      reactor.dispatch(
-        'TOGGLE_NOTE_EDITING',
-        {
-          noteId: noteId,
-          isEditing: false,
-        },
-      );
-
-      reactor.dispatch(
-        'UPDATE_NOTE',
-        {
-          noteId: noteId,
-          task: task,
-        }
-      );
-
-      reactor.dispatch(
-        'ADD_NOTE',
-        {
-          laneId: laneId,
-        }
-      );
-
-    })
+  postEditingNote({laneId, noteId, task}) {
+    reactor.dispatch('UPDATE_NOTE', { noteId: noteId, task: task, status: 'edited' });
   },
 
   deleteNote({ noteId }) {
@@ -58,10 +37,10 @@ export default {
 
   editNote({ noteId }) {
     reactor.dispatch(
-      'TOGGLE_NOTE_EDITING',
+      'UPDATE_NOTE',
       {
         noteId: noteId,
-        isEditing: true,
+        status: 'editing',
       }
     );
   },
