@@ -17,6 +17,10 @@ const noteSource = {
       noteId: props.noteId,
     };
   },
+
+  isDragging(props, monitor) {
+    return props.noteId === monitor.getItem().noteId;
+  },
 }
 
 const noteTarget = {
@@ -101,7 +105,7 @@ const Note = React.createClass({
   render() {
     const { connectDragSource, connectDropTarget, isDragging, isEditing } = this.props;
 
-    const opacity = isDragging? 0.1 : 1;
+    const opacity = isDragging? 0 : 1;
 
     return connectDragSource(connectDropTarget(
       <div style={{opacity}}>

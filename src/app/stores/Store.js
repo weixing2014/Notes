@@ -91,7 +91,7 @@ function addNote( state, { laneId } ) {
          task: '',
          isEditing: true,
        })
-       
+
   const newState = state.updateIn(
     [laneIndex, 'notes'],
     function(notes) {
