@@ -17,6 +17,8 @@ export default Store({
     this.on('DELETE_NOTE', deleteNote);
 
     this.on('MOVE_NOTE_AROUND', moveNoteAround);
+
+    this.on('UPDATE_LANE_NAME', updateLaneName);
   },
 })
 
@@ -48,13 +50,7 @@ function addLane(state, { name }) {
     id: uuid.v4(),
     name: laneName,
     status: 'new',
-    notes: [
-      {
-        id: uuid.v4(),
-        task: '',
-        status: 'new',
-      },
-    ],
+    notes: [],
   })
 
   return state.push(newLane);
@@ -132,4 +128,9 @@ function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
   } else {
     return state;
   }
+}
+
+function updateLaneName( state, { laneId, name }) {
+  const laneIndex = findLaneIndex(state, { laneId });
+  return state.update(laneIndex, lane => lane.set('status', 'posted').set('name', name));
 }

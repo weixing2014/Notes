@@ -34,8 +34,23 @@ const styles = {
 }
 
 const Lane = React.createClass({
-  updateLaneName() {
 
+  componentDidMount() {
+    if (this.refs.txtFldLaneName) {
+      this.refs.txtFldLaneName.focus();
+    }
+  },
+
+  componentDidUpdate() {
+    if (this.refs.txtFldLaneName) {
+      this.refs.txtFldLaneName.focus();
+    }
+  },
+
+  updateLaneName() {
+    const { laneId, status } = this.props,
+          name = this.refs.txtFldLaneName.getValue()
+    laneActions.updateLaneName({ laneId, name });
   },
 
   cancelUpdatingLaneName() {
@@ -51,11 +66,12 @@ const Lane = React.createClass({
     return (
       <span className="hhh">
         <TextField
+          ref="txtFldLaneName"
           defaultValue={ name }
           style={{width: '200px'}}
           onFocus={this.selectText}
-          onEnterKeyDown={this.updateLaneName()}
-          onBlur={this.cancelUpdatingLaneName()}
+          onEnterKeyDown={this.updateLaneName}
+          onBlur={this.cancelUpdatingLaneName}
           />
       </span>
     );
@@ -69,6 +85,11 @@ const Lane = React.createClass({
     );
   },
 
+  isNewOrEditing() {
+    const { status } = this.props;
+    return status === 'new' || status === 'editing';
+  },
+
   render() {
 
     const { laneId, name, status } = this.props;
@@ -80,9 +101,9 @@ const Lane = React.createClass({
         style={styles.container}
         >
         <CardHeader
-          title={ status === 'new' || status === 'editing' ? this.renderEditingName() : this.renderName()}
+          title={ this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
           avatar={<Avatar style={{display:'none'}} />}
-          style={{height: '40px', padding: '0 16px'}}
+          style={{height: '40px', padding: this.isNewOrEditing() ? '0 16px' : '16px'}}
           >
           <Icon
             iconName='plus-square-o'
