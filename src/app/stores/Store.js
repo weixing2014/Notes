@@ -18,7 +18,7 @@ export default Store({
 
     this.on('MOVE_NOTE_AROUND', moveNoteAround);
 
-    this.on('UPDATE_LANE_NAME', updateLaneName);
+    this.on('UPDATE_LANE', updateLane);
   },
 })
 
@@ -130,7 +130,17 @@ function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
   }
 }
 
-function updateLaneName( state, { laneId, name }) {
+function updateLane( state, { laneId, name, status }) {
   const laneIndex = findLaneIndex(state, { laneId });
-  return state.update(laneIndex, lane => lane.set('status', 'posted').set('name', name));
+  return state.update(
+    laneIndex,
+    lane =>
+    lane.set(
+      'status',
+      status || state.getIn([laneIndex, 'status'])
+    ).set(
+      'name',
+      name || state.getIn([laneIndex, 'name'])
+    )
+  );
 }

@@ -47,10 +47,16 @@ const Lane = React.createClass({
     }
   },
 
-  updateLaneName() {
+  updateLaneName(e) {
+    e.preventDefault();
     const { laneId, status } = this.props,
           name = this.refs.txtFldLaneName.getValue()
-    laneActions.updateLaneName({ laneId, name });
+    laneActions.updateLaneName({ laneId, status, name });
+  },
+
+  editLaneName() {
+    const { laneId } = this.props;
+    laneActions.editLaneName({ laneId });
   },
 
   cancelUpdatingLaneName() {
@@ -81,7 +87,7 @@ const Lane = React.createClass({
     const { name } = this.props;
 
     return (
-      <span style={{fontSize: '16px'}}>{name}</span>
+      <span onClick={this.editLaneName} style={{fontSize: '16px'}}>{name}</span>
     );
   },
 

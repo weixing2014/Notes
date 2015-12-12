@@ -6,11 +6,25 @@ export default {
     reactor.dispatch('ADD_LANE', {});
   },
 
- deleteLane({ laneId }) {
+  deleteLane({ laneId }) {
     reactor.dispatch('DELETE_LANE', { laneId });
   },
 
-  updateLaneName({ laneId, name }) {
-    reactor.dispatch('UPDATE_LANE_NAME', { laneId, name });
+  updateLaneName({ laneId, status, name }) {
+    if ( status === 'new' ) {
+      const status = 'done';
+      reactor.batch(function() {
+        reactor.dispatch('UPDATE_LANE', { laneId, name, status });
+        reactor.dispatch('ADD_NOTE', { laneId });
+      })
+    } else if ( status === 'editing' ) {
+      const status = 'edited';
+      reactor.dispatch('UPDATE_LANE', { laneId, name, status });
+    }
+  },
+
+  editLaneName({ laneId }) {
+    const status = 'editing';
+    reactor.dispatch('UPDATE_LANE', { laneId, status })
   },
 }
