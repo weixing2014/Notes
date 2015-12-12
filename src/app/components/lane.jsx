@@ -14,8 +14,15 @@ import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions';
 import laneActions from '../actions/LaneActions';
 import Icon from './icon'
+import {DropTarget} from 'react-dnd'
+import ItemTypes from '../constants/item-types'
+import Notes from './notes'
 
-import Notes from './notes';
+const noteTarget = {
+  hover(targetProps, monitor, component) {
+    console.log('Dropping on a lane...');
+  },
+}
 
 const styles = {
   icon: {
@@ -98,52 +105,59 @@ const Lane = React.createClass({
 
   render() {
 
-    const { laneId, name, status } = this.props;
+    const { laneId, name, status, connectDropTarget } = this.props;
 
-    return (
-      <Card
-        dataKey={laneId}
-        initiallyExpanded={true}
-        style={styles.container}
-        >
-        <CardHeader
-          title={ this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
-          avatar={<Avatar style={{display:'none'}} />}
-          style={{height: '40px', padding: this.isNewOrEditing() ? '0 16px' : '16px'}}
+    return connectDropTarget(
+      <div style={styles.container}>
+        <Card
+          dataKey={laneId}
+          initiallyExpanded={true}
           >
-          <Icon
-            iconName='plus-square-o'
-            className='lane__edit-icon'
-            style={
-              _.extend(
-                {},
-                styles.icon,
-                {right: '28px'}
-              )
-            }
-            onClick={
-              noteActions.addNote.bind(null, { laneId })
-            }
-          />
-          <Icon
-            iconName='trash-o'
-            className='lane__delete-icon'
-            style={
-              _.extend(
-                {},
-                styles.icon,
-                {right: '10px'}
-              )
-            }
-            onClick={
-              laneActions.deleteLane.bind(null, { laneId })
-            }
-          />
-        </CardHeader>
-        <Notes laneId={laneId} />
-      </Card>
+          <CardHeader
+            title={ this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
+            avatar={<Avatar style={{display:'none'}} />}
+            style={{height: '40px', padding: this.isNewOrEditing() ? '0 16px' : '16px'}}
+            >
+            <Icon
+              iconName='plus-square-o'
+              className='lane__edit-icon'
+              style={
+                _.extend(
+                  {},
+                  styles.icon,
+                  {right: '28px'}
+                )
+              }
+              onClick={
+                noteActions.addNote.bind(null, { laneId })
+              }
+            />
+            <Icon
+              iconName='trash-o'
+              className='lane__delete-icon'
+              style={
+                _.extend(
+                  {},
+                  styles.icon,
+                  {right: '10px'}
+                )
+              }
+              onClick={
+                laneActions.deleteLane.bind(null, { laneId })
+              }
+            />
+          </CardHeader>
+          <Notes laneId={laneId} />
+        </Card>
+      </div>
     );
   },
 });
 
-export default Lane;
+export default DropTarget(
+  ItemTypes.NOTE,
+  noteTarget,
+  (connect) => ({
+    connectDropTarget: connect.dropTarget(),
+  })
+)(Lane);
