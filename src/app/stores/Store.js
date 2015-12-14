@@ -112,9 +112,9 @@ function addNote( state, { laneId } ) {
 function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
   if (sourceNoteId !== targetNoteId) {
 
-    const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: sourceNoteId });
-    const sourceLaneIndex = sourceLandAndNoteIndexes.laneIndex;
-    const sourceNoteIndex = sourceLandAndNoteIndexes.noteIndex;
+    const sourceLaneAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: sourceNoteId });
+    const sourceLaneIndex = sourceLaneAndNoteIndexes.laneIndex;
+    const sourceNoteIndex = sourceLaneAndNoteIndexes.noteIndex;
 
     const sourceNote = state.getIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
     const stateWithoutSourceNote = state.deleteIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
@@ -147,9 +147,9 @@ function updateLane(state, { laneId, name, status }) {
 }
 
 function attachToLane(state, { noteId, laneId }) {
-  const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: noteId });
-  const sourceLaneIndex = sourceLandAndNoteIndexes.laneIndex;
-  const sourceNoteIndex = sourceLandAndNoteIndexes.noteIndex;
+  const sourceLaneAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: noteId });
+  const sourceLaneIndex = sourceLaneAndNoteIndexes.laneIndex;
+  const sourceNoteIndex = sourceLaneAndNoteIndexes.noteIndex;
 
   const laneIndexToDrop = findLaneIndex(state, { laneId });
 
