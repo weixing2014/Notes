@@ -75,4 +75,23 @@ export default {
       );
     });
   },
+
+  setTargetLaneToDrop({ laneId }) {
+    reactor.dispatch(
+      'SET_TARGET_LANE_TO_DROP',
+      {
+        laneId,
+      }
+    )
+  },
+
+  attachToLane({ noteId, laneId }) {
+    reactor.dispatch(
+      'ATTACH_TO_LANE',
+      {
+        noteId,
+        laneId,
+      }
+    )
+  },
 }

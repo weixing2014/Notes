@@ -1,5 +1,6 @@
 import noteActions from './actions/NoteActions'
 import reactor from './libs/reactor'
+import DragNDropStore from './stores/dragNDropStore'
 import Store from './stores/Store'
 
 (function () {
@@ -21,6 +22,7 @@ import Store from './stores/Store'
   // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
 
   reactor.registerStores({
+    dragNDropStore: DragNDropStore,
     lanes: Store,
   });
 

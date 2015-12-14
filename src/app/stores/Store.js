@@ -17,6 +17,7 @@ export default Store({
     this.on('DELETE_NOTE', deleteNote);
 
     this.on('MOVE_NOTE_AROUND', moveNoteAround);
+    this.on('ATTACH_TO_LANE', attachToLane);
 
     this.on('UPDATE_LANE', updateLane);
   },
@@ -130,7 +131,7 @@ function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
   }
 }
 
-function updateLane( state, { laneId, name, status }) {
+function updateLane(state, { laneId, name, status }) {
   const laneIndex = findLaneIndex(state, { laneId });
   return state.update(
     laneIndex,
@@ -143,4 +144,19 @@ function updateLane( state, { laneId, name, status }) {
       name || state.getIn([laneIndex, 'name'])
     )
   );
+}
+
+function attachToLane(state, { noteId, laneId }) {
+  const sourceLandAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: noteId });
+  const sourceLaneIndex = sourceLandAndNoteIndexes.laneIndex;
+  const sourceNoteIndex = sourceLandAndNoteIndexes.noteIndex;
+
+  const laneIndexToDrop = findLaneIndex(state, { laneId });
+
+  const sourceNote = state.getIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
+  const stateWithoutSourceNote = state.deleteIn([sourceLaneIndex, 'notes', sourceNoteIndex]);
+
+  return stateWithoutSourceNote.updateIn([laneIndexToDrop, 'notes'], function(notes) {
+    return notes.splice(0, 0, sourceNote);
+  });
 }

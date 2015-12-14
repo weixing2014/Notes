@@ -1,4 +1,6 @@
 import React from 'react';
+import reactor from '../libs/reactor'
+import getters from './../getters'
 import _ from 'lodash'
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -14,13 +16,24 @@ import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions';
 import laneActions from '../actions/LaneActions';
 import Icon from './icon'
-import {DropTarget} from 'react-dnd'
+import { DropTarget } from 'react-dnd'
 import ItemTypes from '../constants/item-types'
 import Notes from './notes'
 
 const noteTarget = {
-  hover(targetProps, monitor, component) {
-    console.log('Dropping on a lane...');
+  hover(targetProps, monitor) {
+    const noteId = monitor.getItem().noteId;
+    const laneId = targetProps.laneId;
+
+    reactor.batch(function(){
+      noteActions.setTargetLaneToDrop({ laneId: laneId });
+      if (reactor.evaluate(getters.laneToDropIsEmpty)) {
+        noteActions.attachToLane({
+          noteId,
+          laneId,
+        })
+      }
+    })
   },
 }
 
@@ -41,7 +54,6 @@ const styles = {
 }
 
 const Lane = React.createClass({
-
   componentDidMount() {
     if (this.refs.txtFldLaneName) {
       this.refs.txtFldLaneName.focus();
@@ -157,7 +169,8 @@ const Lane = React.createClass({
 export default DropTarget(
   ItemTypes.NOTE,
   noteTarget,
-  (connect) => ({
+  (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
   })
 )(Lane);
