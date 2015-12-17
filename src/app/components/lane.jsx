@@ -1,8 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import _ from 'lodash'
 import Card from 'material-ui/lib/card/card';
+import { Panel, Input, Button } from 'react-bootstrap';
 import CardActions from 'material-ui/lib/card/card-actions';
 import CardExpandable from 'material-ui/lib/card/card-expandable';
 import CardHeader from 'material-ui/lib/card/card-header';
@@ -40,13 +42,11 @@ const noteTarget = {
 const styles = {
   icon: {
     position: 'absolute',
-    fontSize: '1.2em',
-    top: '50%',
     cursor: 'pointer',
     color: '#9e9e9e',
   },
   container: {
-    width: '20%',
+    width: '25%',
     display: 'inline-block',
     margin: '10px',
     verticalAlign: 'top',
@@ -56,20 +56,20 @@ const styles = {
 const Lane = React.createClass({
   componentDidMount() {
     if (this.refs.txtFldLaneName) {
-      this.refs.txtFldLaneName.focus();
+      ReactDOM.findDOMNode(this.refs.txtFldLaneName.refs.input).focus()
     }
   },
 
   componentDidUpdate() {
     if (this.refs.txtFldLaneName) {
-      this.refs.txtFldLaneName.focus();
+      ReactDOM.findDOMNode(this.refs.txtFldLaneName.refs.input).focus()
     }
   },
 
   updateLaneName(e) {
     e.preventDefault();
-    const { laneId, status } = this.props,
-          name = this.refs.txtFldLaneName.getValue()
+    const { laneId, status } = this.props;
+    const name = this.refs.txtFldLaneName.getValue()
     laneActions.updateLaneName({ laneId, status, name });
   },
 
@@ -86,19 +86,40 @@ const Lane = React.createClass({
     e.target.select();
   },
 
+  onLaneInputKeyDown(e) {
+    if (e.keyCode === 13) {
+      this.updateLaneName(e);
+    }
+  },
+
   renderEditingName() {
     const { name, status } = this.props;
     return (
-      <span className="hhh">
-        <TextField
-          ref="txtFldLaneName"
-          defaultValue={ name }
-          style={{width: '200px'}}
-          onFocus={this.selectText}
-          onEnterKeyDown={this.updateLaneName}
-          onBlur={this.cancelUpdatingLaneName}
-          />
-      </span>
+      <Input
+       type="text"
+       defaultValue={name}
+       placeholder="Enter Lane Title…"
+       ref="txtFldLaneName"
+       buttonAfter={
+         <Button onClick={this.updateLaneName}>
+           <i className="fa fa-check" style={{color: '#9e9e9e'}}/>
+         </Button>
+       }
+       onFocus={this.selectText}
+       onKeyDown={this.onLaneInputKeyDown}
+       onBlur={this.cancelUpdatingLaneName}
+       standalone
+      />
+      // <span className="hhh">
+      //   <TextField
+      //     ref="txtFldLaneName"
+      //     defaultValue={ name }
+      //     style={{width: '200px'}}
+      //     onFocus={this.selectText}
+      //     onEnterKeyDown={this.updateLaneName}
+      //     onBlur={this.cancelUpdatingLaneName}
+      //     />
+      // </span>
     );
   },
 
@@ -119,48 +140,50 @@ const Lane = React.createClass({
 
     const { laneId, name, status, connectDropTarget } = this.props;
 
+    const panelHeader = (
+      <div style={{position: 'relative'}}>
+        { this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
+        <Icon
+          iconName='plus'
+          className='lane__edit-icon'
+          tooltipContent='Add Note'
+          style={
+            _.extend(
+              {},
+              styles.icon,
+              {right: '25px'}
+            )
+          }
+          onClick={
+            noteActions.addNote.bind(null, { laneId })
+          }
+        />
+        <Icon
+          iconName='trash-o'
+          className='lane__delete-icon'
+          tooltipContent='Delete Lane'
+          style={
+            _.extend(
+              {},
+              styles.icon,
+              {right: '0'}
+            )
+          }
+          onClick={
+            laneActions.deleteLane.bind(null, { laneId })
+          }
+        />
+      </div>
+    );
+
     return connectDropTarget(
       <div style={styles.container}>
-        <Card
+        <Panel
           dataKey={laneId}
-          initiallyExpanded={true}
+          header={panelHeader}
           >
-          <CardHeader
-            title={ this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
-            avatar={<Avatar style={{display:'none'}} />}
-            style={{height: '40px', padding: this.isNewOrEditing() ? '0 16px' : '16px'}}
-            >
-            <Icon
-              iconName='plus-square-o'
-              className='lane__edit-icon'
-              style={
-                _.extend(
-                  {},
-                  styles.icon,
-                  {right: '28px'}
-                )
-              }
-              onClick={
-                noteActions.addNote.bind(null, { laneId })
-              }
-            />
-            <Icon
-              iconName='trash-o'
-              className='lane__delete-icon'
-              style={
-                _.extend(
-                  {},
-                  styles.icon,
-                  {right: '10px'}
-                )
-              }
-              onClick={
-                laneActions.deleteLane.bind(null, { laneId })
-              }
-            />
-          </CardHeader>
           <Notes laneId={laneId} />
-        </Card>
+        </Panel>
       </div>
     );
   },
