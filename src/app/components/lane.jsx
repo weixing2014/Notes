@@ -44,6 +44,7 @@ const styles = {
     position: 'absolute',
     cursor: 'pointer',
     color: '#9e9e9e',
+    right: '0',
   },
   container: {
     width: '25%',
@@ -98,7 +99,7 @@ const Lane = React.createClass({
       <Input
        type="text"
        defaultValue={name}
-       placeholder="Enter Lane Title…"
+       placeholder="Give me a title :)"
        ref="txtFldLaneName"
        buttonAfter={
          <Button onClick={this.updateLaneName}>
@@ -110,39 +111,15 @@ const Lane = React.createClass({
        onBlur={this.cancelUpdatingLaneName}
        standalone
       />
-      // <span className="hhh">
-      //   <TextField
-      //     ref="txtFldLaneName"
-      //     defaultValue={ name }
-      //     style={{width: '200px'}}
-      //     onFocus={this.selectText}
-      //     onEnterKeyDown={this.updateLaneName}
-      //     onBlur={this.cancelUpdatingLaneName}
-      //     />
-      // </span>
     );
   },
 
   renderName() {
-    const { name } = this.props;
+    const { name, laneId } = this.props;
 
     return (
-      <span onClick={this.editLaneName} style={{fontSize: '16px'}}>{name}</span>
-    );
-  },
-
-  isNewOrEditing() {
-    const { status } = this.props;
-    return status === 'new' || status === 'editing';
-  },
-
-  render() {
-
-    const { laneId, name, status, connectDropTarget } = this.props;
-
-    const panelHeader = (
-      <div style={{position: 'relative'}}>
-        { this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
+      <div className="lane-edit-container">
+        <span onClick={this.editLaneName} style={{fontSize: '16px'}}>{name}</span>
         <Icon
           iconName='plus'
           className='lane__edit-icon'
@@ -166,13 +143,28 @@ const Lane = React.createClass({
             _.extend(
               {},
               styles.icon,
-              {right: '0'}
             )
           }
           onClick={
             laneActions.deleteLane.bind(null, { laneId })
           }
         />
+      </div>
+    );
+  },
+
+  isNewOrEditing() {
+    const { status } = this.props;
+    return status === 'new' || status === 'editing';
+  },
+
+  render() {
+
+    const { laneId, name, status, connectDropTarget } = this.props;
+
+    const panelHeader = (
+      <div style={{position: 'relative'}}>
+        { this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
       </div>
     );
 

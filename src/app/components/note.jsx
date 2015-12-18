@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import _ from 'lodash';
+import { Panel, Input, Button } from 'react-bootstrap';
 import ListItem from 'material-ui/lib/lists/list-item';
 import TextField from 'material-ui/lib/text-field';
 import NoteTextField from './note-text-field'
@@ -59,42 +60,23 @@ const Note = React.createClass({
   renderEdit() {
     const { laneId, noteId, task, status } = this.props;
     return (
-      <Paper zDepth={1} style={{margin: '0 10px', padding: '10px'}}>
-        <NoteTextField laneId={laneId} noteId={noteId} task={task} status={status} />
-      </Paper>
+      <NoteTextField laneId={laneId} noteId={noteId} task={task} status={status} />
     );
   },
 
   renderTask() {
     const { noteId, task } = this.props
     return (
-      <Paper className='note__container' zDepth={1} style={{margin: '0 10px', padding: '10px', position: 'relative'}}>
-        <div
-          style={{marginRight: '25px'}}
-          onClick={noteActions.editNote.bind(null, {noteId})}
-          >
-          {task}
-        </div>
-        <Icon
-          iconName='pencil-square-o'
-          className='note__edit-icon'
-          style={_.extend(
-            {},
-            styles.icon,
-            {right: '20px'},
-          )}
-          onClick={noteActions.editNote.bind(null, {noteId})}
-          />
-        <span
-          className='fa fa-trash-o note__delete-icon'
-          style={_.extend(
-            {},
-            styles.icon,
-            {right: '5px'},
-          )}
-          onClick={noteActions.deleteNote.bind(null, {noteId})}
-        />
-      </Paper>
+      <Panel
+        standalone
+        style={
+          {
+            marginBottom: '0px',
+          }
+        }
+        >
+        {task}
+      </Panel>
     );
   },
 

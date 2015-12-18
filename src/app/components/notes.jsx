@@ -2,8 +2,6 @@ import React from 'react';
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import Note from './note.jsx';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
 
 
 const Notes = React.createClass({
@@ -22,7 +20,7 @@ const Notes = React.createClass({
     const notes = this.state.lanes.get(laneIndex).get('notes');
 
     return (
-      <List>
+      <div className="notes">
         {
           notes.map(
             note => (
@@ -35,7 +33,7 @@ const Notes = React.createClass({
             )
           )
         }
-      </List>
+      </div>
     )
   },
 

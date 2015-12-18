@@ -4,6 +4,7 @@ import reactor from '../libs/reactor';
 import getters from './../getters';
 import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions'
+import { Panel, Input, Button } from 'react-bootstrap';
 
 const NoteTextField = React.createClass({
   mixins: [reactor.ReactMixin],
@@ -15,7 +16,9 @@ const NoteTextField = React.createClass({
   },
 
   componentDidMount() {
-    this.refs.textField.focus();
+    if (this.refs.textField) {
+      ReactDOM.findDOMNode(this.refs.textField.refs.input).focus();
+    }
   },
 
   updateNote() {
@@ -59,16 +62,27 @@ const NoteTextField = React.createClass({
     this.updateNote();
   },
 
+  onLaneInputKeyDown(e) {
+    if (e.keyCode === 13) {
+      this.updateNote();
+    }
+  },
+
   render() {
     const { task, status } = this.props;
     return (
-      <TextField
+      <Input
+        type="text"
         ref="textField"
+        placeholder="Say something…"
+        buttonAfter={
+          <Button onClick={this.postNote}>
+            <i className="fa fa-check" style={{color: '#9e9e9e'}}/>
+          </Button>
+        }
+        onKeyDown={this.onLaneInputKeyDown}
         defaultValue={ task }
-        multiLine={true}
-        style={{width: '200px', fontSize:'14px'}}
-        onEnterKeyDown={ this.postNote }
-        onBlur={ this.cancelPostingNote }
+        standalone
         />
     );
   },
