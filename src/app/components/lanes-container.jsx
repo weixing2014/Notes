@@ -1,10 +1,10 @@
 import React from 'react';
 import reactor from '../libs/reactor'
 import getters from './../getters'
-import Lane from './lane.jsx';
+import Lanes from './lanes.jsx';
 import noteActions from '../actions/NoteActions';
 
-const Lanes = React.createClass({
+const LanesContainer = React.createClass({
 
   mixins: [reactor.ReactMixin],
 
@@ -24,25 +24,11 @@ const Lanes = React.createClass({
 
 
   render() {
-    const lanes = {this.props.data}
-
     return (
-      <div className="row">
-        {
-          lanes.map(
-            lane => (
-              <Lane
-                laneId={lane.get('id')}
-                name={lane.get('name')}
-                status={lane.get('status')}
-                />
-            )
-          )
-        }
-      </div>
+      <Lanes data={this.state.lanes} />
     )
   },
 
 });
 
-export default Lanes;
+export default LanesContainer;

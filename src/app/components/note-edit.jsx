@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reactor from '../libs/reactor';
 import getters from './../getters';
-import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions'
 import { Panel, Input, Button } from 'react-bootstrap';
 
-const NoteTextField = React.createClass({
+const NoteEdit = React.createClass({
   mixins: [reactor.ReactMixin],
 
   getDataBindings() {
@@ -76,16 +75,20 @@ const NoteTextField = React.createClass({
         ref="textField"
         placeholder="Say something…"
         buttonAfter={
-          <Button onClick={this.postNote}>
-            <i className="fa fa-check" style={{color: '#9e9e9e'}}/>
+          <Button className="btn-info" onClick={this.postNote}>
+            <i className="fa fa-check"/>
           </Button>
         }
         onKeyDown={this.onLaneInputKeyDown}
-        defaultValue={ task }
+        defaultValue={task}
+        onBlur={this.postNote}
+        style={{
+          borderColor: '#3498db',
+        }}
         standalone
         />
     );
   },
 })
 
-export default NoteTextField;
+export default NoteEdit;

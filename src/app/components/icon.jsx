@@ -5,7 +5,6 @@ import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 const Icon = React.createClass({
 
   render() {
-
     const { iconName, className, style, onClick, tooltipContent, tooltipPlacement } = this.props;
 
     const tooltip = (
@@ -14,16 +13,12 @@ const Icon = React.createClass({
 
     return (
       <OverlayTrigger placement={tooltipPlacement || "top"} overlay={tooltip}>
-        <Button style={style} bsSize="xsmall" onClick={onClick}>
-          <i className={`fa fa-${iconName}`} />
-        </Button>
+        <span
+          style={style}
+          onClick={onClick}
+          className={`fa fa-${iconName} ${className}`}
+          />
       </OverlayTrigger>
-
-      // <span
-      //   className={`fa fa-${iconName} ${className}`}
-      //   style={style}
-      //   onClick={onClick}
-      // />
     );
   },
 });

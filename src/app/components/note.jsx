@@ -2,14 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import _ from 'lodash';
 import { Panel, Input, Button } from 'react-bootstrap';
-import ListItem from 'material-ui/lib/lists/list-item';
-import TextField from 'material-ui/lib/text-field';
-import NoteTextField from './note-text-field'
-import Colors from 'material-ui/lib/styles/colors'
+import NoteEdit from './note-edit'
 import noteActions from '../actions/NoteActions'
 import {DragSource, DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/item-types'
-import Paper from 'material-ui/lib/paper';
 import Icon from './icon'
 
 const noteSource = {
@@ -47,12 +43,20 @@ const noteTarget = {
 }
 
 const styles = {
+  panel: {
+    marginBottom: '0px',
+    cursor: 'pointer',
+    position: 'relative',
+  },
   icon: {
     position: 'absolute',
-    top: '12px',
-    fontSize: '1.2em',
     cursor: 'pointer',
-    color: '#9e9e9e',
+    color: '#3498db',
+    top: '15px',
+  },
+  noteDisplay: {
+    display: 'inline-block',
+    width: '100%',
   },
 }
 
@@ -60,7 +64,7 @@ const Note = React.createClass({
   renderEdit() {
     const { laneId, noteId, task, status } = this.props;
     return (
-      <NoteTextField laneId={laneId} noteId={noteId} task={task} status={status} />
+      <NoteEdit laneId={laneId} noteId={noteId} task={task} status={status} />
     );
   },
 
@@ -68,14 +72,29 @@ const Note = React.createClass({
     const { noteId, task } = this.props
     return (
       <Panel
-        standalone
-        style={
-          {
-            marginBottom: '0px',
-          }
-        }
+        className="note__container"
+        style={styles.panel}
         >
-        {task}
+        <span
+          style={styles.noteDisplay}
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          >
+          {task}
+        </span>
+        <Icon
+          iconName='pencil'
+          className='note__delete-icon'
+          tooltipContent='Edit Note'
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          style={_.extend({}, styles.icon, {right: '35px'})}
+          />
+        <Icon
+          iconName='trash-o'
+          className='note__delete-icon'
+          tooltipContent='Delete Note'
+          onClick={noteActions.deleteNote.bind(null, {noteId})}
+          style={_.extend({}, styles.icon, {right: '10px'})}
+          />
       </Panel>
     );
   },

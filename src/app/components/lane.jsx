@@ -5,16 +5,6 @@ import getters from './../getters'
 import _ from 'lodash'
 import Card from 'material-ui/lib/card/card';
 import { Panel, Input, Button } from 'react-bootstrap';
-import CardActions from 'material-ui/lib/card/card-actions';
-import CardExpandable from 'material-ui/lib/card/card-expandable';
-import CardHeader from 'material-ui/lib/card/card-header';
-import CardMedia from 'material-ui/lib/card/card-media';
-import CardText from 'material-ui/lib/card/card-text';
-import CardTitle from 'material-ui/lib/card/card-title';
-import Avatar from 'material-ui/lib/avatar';
-import Colors from 'material-ui/lib/styles/colors';
-import FlatButton from 'material-ui/lib/flat-button';
-import TextField from 'material-ui/lib/text-field';
 import noteActions from '../actions/NoteActions';
 import laneActions from '../actions/LaneActions';
 import Icon from './icon'
@@ -43,14 +33,10 @@ const styles = {
   icon: {
     position: 'absolute',
     cursor: 'pointer',
-    color: '#9e9e9e',
     right: '0',
+    top: '5px',
   },
   container: {
-    width: '25%',
-    display: 'inline-block',
-    margin: '10px',
-    verticalAlign: 'top',
   },
 }
 
@@ -101,9 +87,13 @@ const Lane = React.createClass({
        defaultValue={name}
        placeholder="Give me a title :)"
        ref="txtFldLaneName"
+       style={{borderColor:'#2077b2'}}
        buttonAfter={
-         <Button onClick={this.updateLaneName}>
-           <i className="fa fa-check" style={{color: '#9e9e9e'}}/>
+         <Button
+           className="btn-info"
+           style={{backgroundColor:"#217dbb", borderColor: '#2077b2'}}
+           onClick={this.updateLaneName}>
+           <i className="fa fa-check"/>
          </Button>
        }
        onFocus={this.selectText}
@@ -128,7 +118,7 @@ const Lane = React.createClass({
             _.extend(
               {},
               styles.icon,
-              {right: '25px'}
+              {right: '30px'}
             )
           }
           onClick={
@@ -169,8 +159,9 @@ const Lane = React.createClass({
     );
 
     return connectDropTarget(
-      <div style={styles.container}>
+      <div style={styles.container} className={"col-xs-12 col-sm-6 col-md-4"}>
         <Panel
+          className={"panel-info"}
           dataKey={laneId}
           header={panelHeader}
           >
