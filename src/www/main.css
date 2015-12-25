@@ -8,6 +8,10 @@ body {
   line-height: 20px;
 }
 
+div.panel-body {
+  padding: 10px;
+}
+
 .note__container:hover {
   cursor: pointer;
 }
@@ -20,4 +24,12 @@ body {
 .note__container:hover .note__delete-icon,
 .note__container:hover .note__edit-icon {
   visibility: visible;
+}
+
+.row-fluid {
+  white-space: nowrap;
+}
+
+.col-xs-12 .col-sm-6 .col-md-4{
+    display: inline-block;
 }

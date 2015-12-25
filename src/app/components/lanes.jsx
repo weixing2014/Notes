@@ -24,12 +24,11 @@ const Lanes = React.createClass({
 
 
   render() {
-    const lanes = {this.props.data}
-
+        
     return (
       <div className="row">
         {
-          lanes.map(
+          this.state.lanes.map(
             lane => (
               <Lane
                 laneId={lane.get('id')}
