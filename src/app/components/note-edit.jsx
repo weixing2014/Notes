@@ -82,9 +82,6 @@ const NoteEdit = React.createClass({
         onKeyDown={this.onLaneInputKeyDown}
         defaultValue={task}
         onBlur={this.postNote}
-        style={{
-          borderColor: '#3498db',
-        }}
         standalone
         />
     );

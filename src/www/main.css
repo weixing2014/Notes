@@ -16,11 +16,6 @@ div.panel-body {
   cursor: pointer;
 }
 
-.note__container .note__delete-icon,
-.note__container .note__edit-icon {
-  visibility: hidden;
-}
-
 .note__container:hover .note__delete-icon,
 .note__container:hover .note__edit-icon {
   visibility: visible;

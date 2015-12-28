@@ -29,17 +29,6 @@ const noteTarget = {
   },
 }
 
-const styles = {
-  icon: {
-    position: 'absolute',
-    cursor: 'pointer',
-    right: '0',
-    top: '5px',
-  },
-  container: {
-  },
-}
-
 const Lane = React.createClass({
   componentDidMount() {
     if (this.refs.txtFldLaneName) {
@@ -114,13 +103,7 @@ const Lane = React.createClass({
           iconName='plus'
           className='lane__edit-icon'
           tooltipContent='Add Note'
-          style={
-            _.extend(
-              {},
-              styles.icon,
-              {right: '30px'}
-            )
-          }
+          style={{right: '30px'}}
           onClick={
             noteActions.addNote.bind(null, { laneId })
           }
@@ -129,12 +112,6 @@ const Lane = React.createClass({
           iconName='trash-o'
           className='lane__delete-icon'
           tooltipContent='Delete Lane'
-          style={
-            _.extend(
-              {},
-              styles.icon,
-            )
-          }
           onClick={
             laneActions.deleteLane.bind(null, { laneId })
           }
@@ -159,7 +136,7 @@ const Lane = React.createClass({
     );
 
     return connectDropTarget(
-      <div style={styles.container} className={"col-xs-12 col-sm-6 col-md-4"}>
+      <div className={"col-xs-12 col-sm-6 col-md-4"}>
         <Panel
           className={"panel-info"}
           dataKey={laneId}

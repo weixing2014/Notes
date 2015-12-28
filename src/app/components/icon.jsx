@@ -1,26 +1,36 @@
 import React from 'react';
-import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Button, Tooltip } from 'react-bootstrap';
+import Radium from 'radium'
 
+
+const styles = {
+  base: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    right: '0',
+    ':hover': {
+      cursor: 'pointer',
+    },
+  },
+}
 
 const Icon = React.createClass({
 
   render() {
-    const { iconName, className, style, onClick, tooltipContent, tooltipPlacement } = this.props;
-
-    const tooltip = (
-      <Tooltip>{tooltipContent}</Tooltip>
-    );
+    const { iconName, className, style, onClick } = this.props;
 
     return (
-      <OverlayTrigger placement={tooltipPlacement || "top"} overlay={tooltip}>
-        <span
-          style={style}
-          onClick={onClick}
-          className={`fa fa-${iconName} ${className}`}
-          />
-      </OverlayTrigger>
+      <i
+        style={[
+          styles.base,
+          style,
+        ]}
+        onClick={onClick}
+        className={`fa fa-${iconName} ${className}`}
+        />
     );
   },
 });
 
-export default Icon;
+export default Radium(Icon);
