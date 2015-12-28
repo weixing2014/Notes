@@ -7,7 +7,7 @@ import noteActions from '../actions/NoteActions'
 import {DragSource, DropTarget} from 'react-dnd'
 import ItemTypes from '../constants/item-types'
 import Icon from './icon'
-import Radium from 'radium'
+import Radium, {Style} from 'radium'
 
 const noteSource = {
   beginDrag(props) {
@@ -72,9 +72,20 @@ const Note = React.createClass({
     const { noteId, task } = this.props
     return (
       <Panel
-        className="note__container"
+        className="noteContainer"
         style={styles.panel}
         >
+        <Style
+          scopeSelector='.noteContainer'
+          rules={{
+            '.noteAction': {
+              display: 'none',
+            },
+            ':hover .noteAction': {
+              display: 'block',
+            },
+          }
+        } />
         <span
           style={styles.noteDisplay}
           onClick={noteActions.editNote.bind(null, {noteId})}
@@ -83,13 +94,13 @@ const Note = React.createClass({
         </span>
         <Icon
           iconName='pencil'
-          className='note__delete-icon'
+          className='noteAction'
           onClick={noteActions.editNote.bind(null, {noteId})}
           style={{right: '35px'}}
           />
         <Icon
           iconName='trash-o'
-          className='note__delete-icon'
+          className='noteAction'
           onClick={noteActions.deleteNote.bind(null, {noteId})}
           style={{right: '10px'}}
           />
