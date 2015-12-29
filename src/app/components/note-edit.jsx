@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import reactor from '../libs/reactor';
 import getters from './../getters';
 import noteActions from '../actions/NoteActions'
-import { Panel, Input, Button, ListGroup, ListGroupItem, Label } from 'react-bootstrap';
+import { Panel, Input, Button, ListGroup, ListGroupItem, Label, ButtonToolbar } from 'react-bootstrap';
 
 const NoteEdit = React.createClass({
   mixins: [reactor.ReactMixin],
@@ -70,18 +70,19 @@ const NoteEdit = React.createClass({
   render() {
     const { task, status } = this.props;
     return (
-      <Panel>
+      <Panel style={{marginBottom:"5px"}}>
         <Input
+          style={{marginBottom:"5px"}}
           type="text"
           ref="textField"
           placeholder="Say something…"
-          buttonAfter={
-            <Button className="btn-info" onClick={this.postNote}>
-              <i className="fa fa-check"/>
-            </Button>
-          }
           defaultValue={task}
+          standalone
           />
+        <ButtonToolbar>
+          <Button className="pull-right" bsSize="small" bsStyle="success">Save & Close</Button>
+          <Button className="pull-right" bsSize="small" bsStyle="danger">Delete</Button>
+        </ButtonToolbar>
         <label>Description</label>
         <Panel>
           <Input
@@ -90,15 +91,21 @@ const NoteEdit = React.createClass({
             placeholder="textarea"
             standalone
             />
-          <div className="pull-right">
-            <Button bsSize="small" bsStyle="link">Cancel</Button>
-            <Button bsSize="small" bsStyle="info">Done</Button>
-          </div>
+          <ButtonToolbar>
+            <Button className="pull-right" bsSize="small" bsStyle="success">Done</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="link">Cancel</Button>
+          </ButtonToolbar>
         </Panel>
         <label>Activity</label>
-        <Panel style={{marginBottom: '5px'}}>Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1</Panel>
+        <Panel style={{marginBottom: '5px'}}>
+          <header className="clearfix" style={{marginBottom: '3px'}}>
+            <label style={{marginBottom: '0'}}>@Xing.Wei</label>
+            <span className="pull-right" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>27 Dec, 11:12pm</span>
+          </header>
+          Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1
+        </Panel>
         <Panel style={{marginBottom: '5px'}}>Item 2</Panel>
-        <Panel>
+        <Panel style={{marginBottom: '5px'}}>
           <Input
             style={{marginBottom:"5px"}}
             type="textarea"
@@ -107,10 +114,10 @@ const NoteEdit = React.createClass({
             defaultValue={""}
             standalone
           />
-          <div className="pull-right">
-            <Button bsSize="small" bsStyle="link">Cancel</Button>
-            <Button bsSize="small" bsStyle="info">Done</Button>
-          </div>
+          <ButtonToolbar>
+            <Button className="pull-right" bsSize="small" bsStyle="success">Done</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="link">Cancel</Button>
+          </ButtonToolbar>
         </Panel>
       </Panel>
     );
