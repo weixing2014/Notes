@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import reactor from '../libs/reactor';
 import getters from './../getters';
 import noteActions from '../actions/NoteActions'
-import { Panel, Input, Button } from 'react-bootstrap';
+import { Panel, Input, Button, ListGroup, ListGroupItem, Label } from 'react-bootstrap';
 
 const NoteEdit = React.createClass({
   mixins: [reactor.ReactMixin],
@@ -70,20 +70,49 @@ const NoteEdit = React.createClass({
   render() {
     const { task, status } = this.props;
     return (
-      <Input
-        type="text"
-        ref="textField"
-        placeholder="Say something…"
-        buttonAfter={
-          <Button className="btn-info" onClick={this.postNote}>
-            <i className="fa fa-check"/>
-          </Button>
-        }
-        onKeyDown={this.onLaneInputKeyDown}
-        defaultValue={task}
-        onBlur={this.postNote}
-        standalone
-        />
+      <Panel>
+        <Input
+          type="text"
+          ref="textField"
+          placeholder="Say something…"
+          buttonAfter={
+            <Button className="btn-info" onClick={this.postNote}>
+              <i className="fa fa-check"/>
+            </Button>
+          }
+          defaultValue={task}
+          />
+        <label>Description</label>
+        <Panel>
+          <Input
+            style={{marginBottom:"5px"}}
+            type="textarea"
+            placeholder="textarea"
+            standalone
+            />
+          <div className="pull-right">
+            <Button bsSize="small" bsStyle="link">Cancel</Button>
+            <Button bsSize="small" bsStyle="info">Done</Button>
+          </div>
+        </Panel>
+        <label>Activity</label>
+        <Panel style={{marginBottom: '5px'}}>Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1</Panel>
+        <Panel style={{marginBottom: '5px'}}>Item 2</Panel>
+        <Panel>
+          <Input
+            style={{marginBottom:"5px"}}
+            type="textarea"
+            ref="textField"
+            placeholder="New Activity"
+            defaultValue={""}
+            standalone
+          />
+          <div className="pull-right">
+            <Button bsSize="small" bsStyle="link">Cancel</Button>
+            <Button bsSize="small" bsStyle="info">Done</Button>
+          </div>
+        </Panel>
+      </Panel>
     );
   },
 })
