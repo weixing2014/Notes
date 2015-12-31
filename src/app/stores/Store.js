@@ -16,7 +16,7 @@ export default Store({
     this.on('UPDATE_NOTE', updateNote);
     this.on('DELETE_NOTE', deleteNote);
 
-    this.on('MOVE_NOTE_AROUND', moveNoteAround);
+    this.on('MOVE_NOTE', moveNote);
     this.on('ATTACH_TO_LANE', attachToLane);
 
     this.on('UPDATE_LANE', updateLane);
@@ -57,12 +57,49 @@ function addLane(state, { name }) {
   return state.push(newLane);
 }
 
-function deleteNote(state, { laneId, noteId }) {
-  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { laneId, noteId });
+function deleteNote(state, { noteId }) {
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
   return state.deleteIn([laneIndex, 'notes', noteIndex]);
 }
 
-function updateNote(state, { noteId, task, status }) {
+function addNote( state, { laneId } ) {
+  const laneIndex = findLaneIndex(state, { laneId }),
+          newNote = toImmutable({
+         id: uuid.v4(),
+         task: '',
+         status: 'new',
+         description: {
+           content: 'description',
+           isEditing: true,
+         },
+         activities: [
+           {
+             id: uuid.v4(),
+             author: 'Xing.Wei',
+             updated_at: '12 Dec, 9:58pm',
+             content: 'Hello, World',
+             isEditing: false,
+           },
+           {
+             id: uuid.v4(),
+             author: 'Xing.Wei',
+             updated_at: '12 Dec, 9:53pm',
+             content: '',
+             isEditing: true,
+           },
+         ],
+       })
+
+  const newState = state.updateIn(
+    [laneIndex, 'notes'],
+    function(notes) {
+      return notes.push(newNote);
+    }
+  )
+  return newState;
+}
+
+function updateNote(state, { noteId, task, status, description, activities }) {
   const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
   return state.updateIn(
     [laneIndex, 'notes', noteIndex],
@@ -70,6 +107,8 @@ function updateNote(state, { noteId, task, status }) {
       let newNote = note;
       if (task) newNote = newNote.set('task', task);
       if (status) newNote = newNote.set('status', status);
+      if (description) newNote = newNote.set('description', description);
+      if (activities) newNote = newNote.set('activities', activities);
       return newNote;
     }
   );
@@ -90,26 +129,7 @@ function toggleNoteStatus(state, { laneId, noteId, status }) {
   );
 }
 
-function addNote( state, { laneId } ) {
-  const noteId = uuid.v4(),
-     laneIndex = findLaneIndex(state, { laneId }),
-       newNote = toImmutable({
-         id: noteId,
-         task: '',
-         status: 'new',
-       })
-
-  const newState = state.updateIn(
-    [laneIndex, 'notes'],
-    function(notes) {
-      return notes.push(newNote);
-    }
-  )
-
-  return newState;
-}
-
-function moveNoteAround( state, { sourceNoteId, targetNoteId, isAbove }) {
+function moveNote( state, { sourceNoteId, targetNoteId, isAbove }) {
   if (sourceNoteId !== targetNoteId) {
 
     const sourceLaneAndNoteIndexes = findLaneAndNoteIndex(state, { noteId: sourceNoteId });

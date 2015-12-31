@@ -50,7 +50,7 @@ export default {
 
   moveAround({ sourceNoteId, targetNoteId, isAbove }) {
     reactor.dispatch(
-      'MOVE_NOTE_AROUND',
+      'MOVE_NOTE',
       {
         sourceNoteId,
         targetNoteId,

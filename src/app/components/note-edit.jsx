@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import reactor from '../libs/reactor';
 import getters from './../getters';
 import noteActions from '../actions/NoteActions'
+import Activities from './activities'
 import { Panel, Input, Button, ListGroup, ListGroupItem, Label, ButtonToolbar } from 'react-bootstrap';
 
 const NoteEdit = React.createClass({
@@ -67,58 +68,68 @@ const NoteEdit = React.createClass({
     }
   },
 
-  render() {
-    const { task, status } = this.props;
+  renderActivity( activity ) {
+    const { author, content, updated_at } = activity;
+
     return (
-      <Panel style={{marginBottom:"5px"}}>
+      <Panel>
+        <header className="clearfix" style={{marginBottom: '3px'}}>
+          <label style={{marginBottom: '0'}}>@{author}</label>
+          <span className="pull-right" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>{updated_at}</span>
+        </header>
+        {content}
+      </Panel>
+    );
+  },
+
+  renderActivityEdit( activity ) {
+    const { author, content, updated_at } = activity;
+    return (
+      <Panel>
         <Input
           style={{marginBottom:"5px"}}
-          type="text"
+          type="textarea"
           ref="textField"
-          placeholder="Say something…"
+          placeholder="New Activity"
+          defaultValue={content}
+          standalone
+          />
+      </Panel>
+    )
+  },
+
+  renderActivities() {
+    const { activities } = this.props;
+
+    return activities.map(
+      function( activity ) {
+        const { id, ...other} = activity
+        return <Activity key={id} {...other} />
+      }
+    )
+  },
+
+  render() {
+    const { task, status, description, activities, noteId } = this.props;
+    return (
+      <Panel>
+        <Input
+          type="textarea"
+          ref="textField"
+          placeholder="Title"
           defaultValue={task}
           standalone
           />
-        <ButtonToolbar>
+        <ButtonToolbar style={{marginTop: '5px'}}>
           <Button className="pull-right" bsSize="small" bsStyle="success">Save & Close</Button>
-          <Button className="pull-right" bsSize="small" bsStyle="danger">Delete</Button>
+          <Button className="pull-right" bsSize="small" bsStyle="danger" onClick={noteActions.deleteNote.bind(null, { noteId })}>Delete</Button>
         </ButtonToolbar>
-        <label>Description</label>
-        <Panel>
-          <Input
-            style={{marginBottom:"5px"}}
-            type="textarea"
-            placeholder="textarea"
-            standalone
-            />
-          <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success">Done</Button>
-            <Button className="pull-right" bsSize="small" bsStyle="link">Cancel</Button>
-          </ButtonToolbar>
-        </Panel>
-        <label>Activity</label>
-        <Panel style={{marginBottom: '5px'}}>
-          <header className="clearfix" style={{marginBottom: '3px'}}>
-            <label style={{marginBottom: '0'}}>@Xing.Wei</label>
-            <span className="pull-right" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>27 Dec, 11:12pm</span>
-          </header>
-          Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1Item 1
-        </Panel>
-        <Panel style={{marginBottom: '5px'}}>Item 2</Panel>
-        <Panel style={{marginBottom: '5px'}}>
-          <Input
-            style={{marginBottom:"5px"}}
-            type="textarea"
-            ref="textField"
-            placeholder="New Activity"
-            defaultValue={""}
-            standalone
+        <Input
+          label="Description"
+          type="textarea"
+          defaultValue={ description.content }
           />
-          <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success">Done</Button>
-            <Button className="pull-right" bsSize="small" bsStyle="link">Cancel</Button>
-          </ButtonToolbar>
-        </Panel>
+        <Activities label="Activity" list={ activities } />
       </Panel>
     );
   },

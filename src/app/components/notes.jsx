@@ -17,7 +17,7 @@ const Notes = React.createClass({
   render() {
     const { laneId } = this.props;
     const laneIndex = this.state.lanes.findIndex((lane) => lane.get('id') === laneId);
-    const notes = this.state.lanes.get(laneIndex).get('notes');
+    const notes = this.state.lanes.get(laneIndex).get('notes').toJS();
 
     return (
       <div className="notes">
@@ -26,9 +26,11 @@ const Notes = React.createClass({
             note => (
               <Note
                 laneId={ laneId }
-                noteId={ note.get('id') }
-                task={ note.get('task') }
-                status= { note.get('status')}
+                noteId={ note.id }
+                task={ note.task }
+                status={ note.status }
+                description={ note.description }
+                activities={ note.activities } 
                 />
             )
           )

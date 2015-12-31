@@ -62,9 +62,9 @@ const styles = {
 
 const Note = React.createClass({
   renderEdit() {
-    const { laneId, noteId, task, status } = this.props;
+    const {...others } = this.props;
     return (
-      <NoteEdit laneId={laneId} noteId={noteId} task={task} status={status} />
+      <NoteEdit {...others} />
     );
   },
 
