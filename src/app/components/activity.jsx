@@ -1,8 +1,15 @@
 import React from 'react';
-import noteActions from '../actions/NoteActions'
+import ReactDOM from 'react-dom'
+import activityActions from '../actions/ActivityActions'
 import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
 
 const Activity = React.createClass({
+
+  handleCancel(e) {
+    const { content } = this.props;
+
+    this.refs.activityContentInput.refs.input.value = content;
+  },
 
   renderActivity() {
     const { author, content, updated_at } = this.props;
@@ -19,20 +26,20 @@ const Activity = React.createClass({
   },
 
   renderActivityEdit() {
-    const { author, content, updated_at } = this.props;
+    const { author, content, updated_at, dataKey } = this.props;
     return (
       <Panel>
         <Input
           style={{marginBottom:"5px"}}
           type="textarea"
-          ref="textField"
+          ref="activityContentInput"
           placeholder="New Activity"
           defaultValue={content}
           standalone
           />
           <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success">Done</Button>
-            <Button className="pull-right" bsSize="small" bsStyle="link">Cancel</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={activityActions.postEditingActivity.bind(null, { activityId: dataKey })}>Done</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="link" onClick={this.handleCancel}>Cancel</Button>
           </ButtonToolbar>
       </Panel>
     )

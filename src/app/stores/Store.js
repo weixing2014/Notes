@@ -20,6 +20,8 @@ export default Store({
     this.on('ATTACH_TO_LANE', attachToLane);
 
     this.on('UPDATE_LANE', updateLane);
+
+    this.on('UPDATE_ACTIVITY', updateActivity)
   },
 })
 
@@ -179,4 +181,22 @@ function attachToLane(state, { noteId, laneId }) {
   return stateWithoutSourceNote.updateIn([laneIndexToDrop, 'notes'], function(notes) {
     return notes.splice(0, 0, sourceNote);
   });
+}
+
+function findIndexesForActivity( state, activityId ) {
+  for ( let laneIndex = 0; laneIndex < state.size; laneIndex++ ) {
+    for ( let noteIndex = 0; noteIndex < state.getIn([laneIndex, 'notes']).size; noteIndex++ ) {
+      for ( let activityIndex = 0; activityIndex < state.getIn([laneIndex, 'notes', noteIndex, 'activities']).size; activityIndex++ ) {
+        if ( state.getIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'id']) === activityId ) {
+          return { laneIndex, noteIndex, activityIndex }
+        }
+      }
+    }
+  }
+
+  return { laneIndex: -1, noteIndex: -1, activityIndex: -1 }
+}
+
+function updateActivity(state, { activityId, isEditing }) {
+  const { laneIndex, noteIndex, activityIndex } = findIndexesForActivity(state, activityId)
 }
