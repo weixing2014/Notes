@@ -1,5 +1,6 @@
 import { Store, toImmutable } from 'nuclear-js'
 import uuid from 'node-uuid';
+import moment from 'moment'
 
 export default Store({
   getInitialState() {
@@ -7,21 +8,22 @@ export default Store({
   },
 
   initialize() {
-    this.on('RECEIVE_APP_STATE', receiveAppState);
+    this.on('RECEIVE_APP_STATE', receiveAppState)
 
-    this.on('ADD_LANE', addLane);
-    this.on('DELETE_LANE', deleteLane);
+    this.on('ADD_LANE', addLane)
+    this.on('DELETE_LANE', deleteLane)
 
-    this.on('ADD_NOTE', addNote);
-    this.on('UPDATE_NOTE', updateNote);
-    this.on('DELETE_NOTE', deleteNote);
+    this.on('ADD_NOTE', addNote)
+    this.on('UPDATE_NOTE', updateNote)
+    this.on('DELETE_NOTE', deleteNote)
 
-    this.on('MOVE_NOTE', moveNote);
-    this.on('ATTACH_TO_LANE', attachToLane);
+    this.on('MOVE_NOTE', moveNote)
+    this.on('ATTACH_TO_LANE', attachToLane)
 
-    this.on('UPDATE_LANE', updateLane);
+    this.on('UPDATE_LANE', updateLane)
 
     this.on('UPDATE_ACTIVITY', updateActivity)
+    this.on('CREATE_ACTIVITY', createActivity)
   },
 })
 
@@ -78,14 +80,7 @@ function addNote( state, { laneId } ) {
            {
              id: uuid.v4(),
              author: 'Xing.Wei',
-             updated_at: '12 Dec, 9:58pm',
-             content: 'Hello, World',
-             isEditing: false,
-           },
-           {
-             id: uuid.v4(),
-             author: 'Xing.Wei',
-             updated_at: '12 Dec, 9:53pm',
+             updated_at: moment().format('DD MMM, h:mma'),
              content: '',
              isEditing: true,
            },
@@ -197,6 +192,38 @@ function findIndexesForActivity( state, activityId ) {
   return { laneIndex: -1, noteIndex: -1, activityIndex: -1 }
 }
 
-function updateActivity(state, { activityId, isEditing }) {
-  const { laneIndex, noteIndex, activityIndex } = findIndexesForActivity(state, activityId)
+function updateActivity(state, { id, content, isEditing }) {
+  const { laneIndex, noteIndex, activityIndex } = findIndexesForActivity(state, id)
+  let newState = state;
+
+  if (activityIndex === -1) return state;
+  if (content) { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'content'], content) }
+  if (isEditing === true || isEditing === false) { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'isEditing'], isEditing) }
+
+  return newState;
+}
+
+function createActivity(state, { id, noteId }) {
+  let laneIndex, noteIndex;
+  if( id ) {
+    laneIndex = findIndexesForActivity(state, id).laneIndex
+    noteIndex = findIndexesForActivity(state, id).noteIndex
+  } else if ( noteId ) {
+    laneIndex = findLaneAndNoteIndex(state, { noteId: noteId }).laneIndex
+    noteIndex = findLaneAndNoteIndex(state, { noteId: noteId }).noteIndex
+  }
+
+  return state.updateIn([laneIndex, 'notes', noteIndex, 'activities'], function (activities) {
+    return activities.push(
+      toImmutable(
+        {
+          id: uuid.v4(),
+          author: 'Xing.Wei',
+          updated_at: moment().format('DD MMM, h:mma'),
+          content: '',
+          isEditing: true,
+        }
+      )
+    )
+  })
 }

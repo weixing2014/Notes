@@ -2,8 +2,11 @@ import reactor from '../libs/reactor';
 import uuid from 'node-uuid';
 
 export default {
-  postEditingActivity({ activityId }) {
-    reactor.dispatch('UPDATE_ACTIVITY', { activityId: activityId, isEditing: false })
+  postEditingActivity({ id, content }) {
+    reactor.batch(function() {
+      reactor.dispatch('UPDATE_ACTIVITY', { id: id, content: content, isEditing: false })
+      reactor.dispatch('CREATE_ACTIVITY', { id })
+    })
   },
 
   // toggleNoteStatus({ noteId, status }) {

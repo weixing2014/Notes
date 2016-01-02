@@ -11,6 +11,14 @@ const Activity = React.createClass({
     this.refs.activityContentInput.refs.input.value = content;
   },
 
+  handlePost(e) {
+    const { dataKey } = this.props;
+    activityActions.postEditingActivity({
+      id: dataKey,
+      content: this.refs.activityContentInput.refs.input.value,
+    })
+  },
+
   renderActivity() {
     const { author, content, updated_at } = this.props;
 
@@ -38,7 +46,7 @@ const Activity = React.createClass({
           standalone
           />
           <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={activityActions.postEditingActivity.bind(null, { activityId: dataKey })}>Done</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={this.handlePost}>Done</Button>
             <Button className="pull-right" bsSize="small" bsStyle="link" onClick={this.handleCancel}>Cancel</Button>
           </ButtonToolbar>
       </Panel>
