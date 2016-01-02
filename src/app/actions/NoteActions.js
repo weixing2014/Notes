@@ -20,10 +20,14 @@ export default {
     );
   },
 
-  postNewNote({laneId, noteId, task}) {
+  postNewNote({laneId, noteId, task, description}) {
     reactor.batch( function() {
-      reactor.dispatch('UPDATE_NOTE', { noteId: noteId, task: task, status: 'posted' });
-      reactor.dispatch('ADD_NOTE', { laneId });
+      reactor.dispatch('UPDATE_NOTE', {
+        noteId: noteId,
+        task: task,
+        description: description,
+        status: 'posted'
+      });
     })
   },
 

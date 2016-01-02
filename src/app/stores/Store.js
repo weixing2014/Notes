@@ -73,7 +73,7 @@ function addNote( state, { laneId } ) {
          task: '',
          status: 'new',
          description: {
-           content: 'description',
+           content: '',
            isEditing: true,
          },
          activities: [

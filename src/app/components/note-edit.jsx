@@ -68,6 +68,12 @@ const NoteEdit = React.createClass({
     }
   },
 
+  handleSave(e) {
+    noteActions.postNewNote({
+
+    })
+  }
+
   renderActivity( activity ) {
     const { author, content, updated_at } = activity;
 
@@ -121,7 +127,7 @@ const NoteEdit = React.createClass({
           standalone
           />
         <ButtonToolbar style={{marginTop: '5px'}}>
-          <Button className="pull-right" bsSize="small" bsStyle="success">Save & Close</Button>
+          <Button className="pull-right" bsSize="small" bsStyle="success" onClick={this.handleSave}>Save & Close</Button>
           <Button className="pull-right" bsSize="small" bsStyle="danger" onClick={noteActions.deleteNote.bind(null, { noteId })}>Delete</Button>
         </ButtonToolbar>
         <Input
