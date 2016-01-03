@@ -71,11 +71,15 @@ const NoteEdit = React.createClass({
   handleSave(e) {
     const { noteId } = this.props;
 
-    noteActions.postNewNote({
-      noteId: noteId,
-      title: this.refs.titleInput.refs.input.value,
-      description: this.refs.descriptionInput.refs.input.value,
-    })
+    if (this.refs.titleInput.refs.input.value) {
+      noteActions.postNewNote({
+        noteId: noteId,
+        title: this.refs.titleInput.refs.input.value,
+        description: this.refs.descriptionInput.refs.input.value,
+      })
+    } else {
+      ReactDOM.findDOMNode(this.refs.titleInput.refs.input).focus();
+    }
   },
 
   renderActivity( activity ) {
@@ -108,9 +112,9 @@ const NoteEdit = React.createClass({
     return (
       <Panel>
         <Input
-          type="textarea"
+          type="text"
           ref="titleInput"
-          placeholder="Title"
+          placeholder="Story title"
           defaultValue={ title }
           standalone
           />

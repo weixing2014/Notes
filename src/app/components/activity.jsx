@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import activityActions from '../actions/ActivityActions'
-import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
+import { Panel, Input, Button, ButtonToolbar, Modal } from 'react-bootstrap';
 import Radium, { Style } from 'radium'
 
 const styles = {
@@ -31,11 +31,42 @@ const Activity = React.createClass({
     })
   },
 
+  handleEdit(e) {
+    const { dataKey } = this.props
+    activityActions.editActivity({
+      id: dataKey,
+    })
+  },
+
+  handleDelete(e) {
+    const { dataKey } = this.props
+    activityActions.deleteActivity({
+      id: dataKey,
+    })
+  },
+
   renderActivity() {
     const { author, content, updated_at } = this.props;
 
     return (
       <div style={[styles.activityContainer]} className="activityContainer">
+        <div className="static-modal">
+    <Modal show={true}>
+     <Modal.Header closeButton>
+       <Modal.Title>Modal title</Modal.Title>
+     </Modal.Header>
+
+     <Modal.Body>
+       One fine body...
+     </Modal.Body>
+
+     <Modal.Footer>
+       <Button>Close</Button>
+       <Button bsStyle="primary">Save changes</Button>
+     </Modal.Footer>
+
+   </Modal>
+ </div>
         <Style
           scopeSelector='.activityContainer'
           rules={{
@@ -58,8 +89,8 @@ const Activity = React.createClass({
             <label style={{marginBottom: '0'}}>@{author}</label>
             <span className="pull-right activityUpdatedAt" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>{updated_at}</span>
             <ul className="activityButtonGroup">
-              <li style={[ styles.activityIcon ]} className="pull-right fa fa-pencil activityEditIcon"></li>
-              <li style={[ styles.activityIcon ]} className="pull-right fa fa-trash-o activityDeleteIcon"></li>
+              <li onClick={ this.handleEdit } style={[ styles.activityIcon ]} className="pull-right fa fa-pencil activityEditIcon"></li>
+              <li onClick={ this.handleDelete } style={[ styles.activityIcon ]} className="pull-right fa fa-trash-o activityDeleteIcon"></li>
             </ul>
           </header>
           {content}

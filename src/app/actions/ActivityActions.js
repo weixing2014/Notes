@@ -5,7 +5,15 @@ export default {
   postEditingActivity({ id, content }) {
     reactor.batch(function() {
       reactor.dispatch('UPDATE_ACTIVITY', { id: id, content: content, isEditing: false })
-      reactor.dispatch('CREATE_ACTIVITY', { id })
+      reactor.dispatch('APPEND_EDITING_ACTIVITY', { id })
     })
+  },
+
+  editActivity({ id }) {
+    reactor.dispatch('UPDATE_ACTIVITY', { id: id, isEditing: true })
+  },
+
+  deleteActivity({ id }) {
+    reactor.dispatch('DELETE_ACTIVITY', { id: id })
   },
 }

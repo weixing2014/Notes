@@ -23,7 +23,8 @@ export default Store({
     this.on('UPDATE_LANE', updateLane)
 
     this.on('UPDATE_ACTIVITY', updateActivity)
-    this.on('CREATE_ACTIVITY', createActivity)
+    this.on('APPEND_EDITING_ACTIVITY', appendEditingActivity)
+    this.on('DELETE_ACTIVITY', deleteActivity)
   },
 })
 
@@ -200,7 +201,7 @@ function updateActivity(state, { id, content, isEditing }) {
   return newState;
 }
 
-function createActivity(state, { id, noteId }) {
+function appendEditingActivity(state, { id, noteId }) {
   let laneIndex, noteIndex;
   if( id ) {
     laneIndex = findIndexesForActivity(state, id).laneIndex
@@ -210,17 +211,26 @@ function createActivity(state, { id, noteId }) {
     noteIndex = findLaneAndNoteIndex(state, { noteId: noteId }).noteIndex
   }
 
-  return state.updateIn([laneIndex, 'notes', noteIndex, 'activities'], function (activities) {
-    return activities.push(
-      toImmutable(
-        {
-          id: uuid.v4(),
-          author: 'Xing.Wei',
-          updated_at: moment().format('DD MMM, h:mma'),
-          content: '',
-          isEditing: true,
-        }
+  if (state.getIn([laneIndex, 'notes', noteIndex, 'activities']).last().get('isEditing')) {
+    return state
+  } else {
+    return state.updateIn([laneIndex, 'notes', noteIndex, 'activities'], function (activities) {
+      return activities.push(
+        toImmutable(
+          {
+            id: uuid.v4(),
+            author: 'Xing.Wei',
+            updated_at: moment().format('DD MMM, h:mma'),
+            content: '',
+            isEditing: true,
+          }
+        )
       )
-    )
-  })
+    })
+  }
+}
+
+function deleteActivity(state, { id }) {
+  const { laneIndex, noteIndex, activityIndex } = findIndexesForActivity(state, id)
+  return state.deleteIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex])
 }
