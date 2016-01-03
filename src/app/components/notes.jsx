@@ -27,10 +27,10 @@ const Notes = React.createClass({
               <Note
                 laneId={ laneId }
                 noteId={ note.id }
-                task={ note.task }
+                title={ note.title }
                 status={ note.status }
                 description={ note.description }
-                activities={ note.activities } 
+                activities={ note.activities }
                 />
             )
           )

@@ -16,18 +16,18 @@ const NoteEdit = React.createClass({
   },
 
   componentDidMount() {
-    if (this.refs.textField) {
-      ReactDOM.findDOMNode(this.refs.textField.refs.input).focus();
+    if (this.refs.titleInput) {
+      ReactDOM.findDOMNode(this.refs.titleInput.refs.input).focus();
     }
   },
 
   updateNote() {
     const { laneId, noteId, status } = this.props;
-    if (this.refs.textField.getValue()) {
+    if (this.refs.titleInput.getValue()) {
       const note = {
         laneId: laneId,
         noteId: noteId,
-        task: this.refs.textField.getValue(),
+        title: this.refs.titleInput.getValue(),
       }
 
       if ( status === 'new' ) {
@@ -69,10 +69,14 @@ const NoteEdit = React.createClass({
   },
 
   handleSave(e) {
-    noteActions.postNewNote({
+    const { noteId } = this.props;
 
+    noteActions.postNewNote({
+      noteId: noteId,
+      title: this.refs.titleInput.refs.input.value,
+      description: this.refs.descriptionInput.refs.input.value,
     })
-  }
+  },
 
   renderActivity( activity ) {
     const { author, content, updated_at } = activity;
@@ -88,22 +92,6 @@ const NoteEdit = React.createClass({
     );
   },
 
-  renderActivityEdit( activity ) {
-    const { author, content, updated_at } = activity;
-    return (
-      <Panel>
-        <Input
-          style={{marginBottom:"5px"}}
-          type="textarea"
-          ref="textField"
-          placeholder="New Activity"
-          defaultValue={content}
-          standalone
-          />
-      </Panel>
-    )
-  },
-
   renderActivities() {
     const { activities } = this.props;
 
@@ -116,24 +104,25 @@ const NoteEdit = React.createClass({
   },
 
   render() {
-    const { task, status, description, activities, noteId } = this.props;
+    const { title, status, description, activities, noteId } = this.props;
     return (
       <Panel>
         <Input
           type="textarea"
-          ref="textField"
+          ref="titleInput"
           placeholder="Title"
-          defaultValue={task}
+          defaultValue={ title }
           standalone
           />
         <ButtonToolbar style={{marginTop: '5px'}}>
-          <Button className="pull-right" bsSize="small" bsStyle="success" onClick={this.handleSave}>Save & Close</Button>
-          <Button className="pull-right" bsSize="small" bsStyle="danger" onClick={noteActions.deleteNote.bind(null, { noteId })}>Delete</Button>
+          <Button className="pull-right" bsSize="small" bsStyle="success" onClick={ this.handleSave }>Save & Close</Button>
+          <Button className="pull-right" bsSize="small" bsStyle="danger" onClick={ noteActions.deleteNote.bind(null, { noteId }) }>Delete</Button>
         </ButtonToolbar>
         <Input
           label="Description"
+          ref="descriptionInput"
           type="textarea"
-          defaultValue={ description.content }
+          defaultValue={ description }
           />
         <Activities label="Activity" list={ activities } />
       </Panel>

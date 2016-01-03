@@ -70,12 +70,9 @@ function addNote( state, { laneId } ) {
   const laneIndex = findLaneIndex(state, { laneId }),
           newNote = toImmutable({
          id: uuid.v4(),
-         task: '',
+         title: '',
          status: 'new',
-         description: {
-           content: '',
-           isEditing: true,
-         },
+         description: '',
          activities: [
            {
              id: uuid.v4(),
@@ -96,16 +93,16 @@ function addNote( state, { laneId } ) {
   return newState;
 }
 
-function updateNote(state, { noteId, task, status, description, activities }) {
+function updateNote(state, { noteId, title, status, description }) {
   const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId });
+
   return state.updateIn(
     [laneIndex, 'notes', noteIndex],
     function(note) {
       let newNote = note;
-      if (task) newNote = newNote.set('task', task);
+      if (title) newNote = newNote.set('title', title);
       if (status) newNote = newNote.set('status', status);
       if (description) newNote = newNote.set('description', description);
-      if (activities) newNote = newNote.set('activities', activities);
       return newNote;
     }
   );

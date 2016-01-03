@@ -49,11 +49,6 @@ const styles = {
     cursor: 'pointer',
     position: 'relative',
   },
-  icon: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-  },
   noteDisplay: {
     display: 'inline-block',
     width: '100%',
@@ -68,12 +63,13 @@ const Note = React.createClass({
     );
   },
 
-  renderTask() {
-    const { noteId, task } = this.props
+  renderNote() {
+    const { noteId, title } = this.props
     return (
       <Panel
         className="noteContainer"
         style={styles.panel}
+        onClick={noteActions.editNote.bind(null, {noteId})}
         >
         <Style
           scopeSelector='.noteContainer'
@@ -88,22 +84,9 @@ const Note = React.createClass({
         } />
         <span
           style={styles.noteDisplay}
-          onClick={noteActions.editNote.bind(null, {noteId})}
           >
-          {task}
+          {title}
         </span>
-        <Icon
-          iconName='pencil'
-          className='noteAction'
-          onClick={noteActions.editNote.bind(null, {noteId})}
-          style={{right: '35px'}}
-          />
-        <Icon
-          iconName='trash-o'
-          className='noteAction'
-          onClick={noteActions.deleteNote.bind(null, {noteId})}
-          style={{right: '10px'}}
-          />
       </Panel>
     );
   },
@@ -115,7 +98,7 @@ const Note = React.createClass({
 
     return connectDragSource(connectDropTarget(
       <div style={{opacity: opacity, padding: '5px 0'}}>
-        { (status === 'new' || status === 'editing') ? this.renderEdit() : this.renderTask() }
+        { (status === 'new' || status === 'editing') ? this.renderEdit() : this.renderNote() }
       </div>
     ));
   },
@@ -138,4 +121,4 @@ export default _.compose(
         isDragging: monitor.isDragging(),
       })
     )
-  )(Note)
+  )(Radium(Note))

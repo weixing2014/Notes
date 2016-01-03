@@ -2,6 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import activityActions from '../actions/ActivityActions'
 import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
+import Radium, { Style } from 'radium'
+
+const styles = {
+  activityContainer: {
+    ':hover': {
+      cursor: 'pointer',
+    },
+  },
+  activityIcon: {
+    padding: '0 .3em',
+  },
+}
 
 const Activity = React.createClass({
 
@@ -23,13 +35,36 @@ const Activity = React.createClass({
     const { author, content, updated_at } = this.props;
 
     return (
-      <Panel>
-        <header className="clearfix" style={{marginBottom: '3px'}}>
-          <label style={{marginBottom: '0'}}>@{author}</label>
-          <span className="pull-right" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>{updated_at}</span>
-        </header>
-        {content}
-      </Panel>
+      <div style={[styles.activityContainer]} className="activityContainer">
+        <Style
+          scopeSelector='.activityContainer'
+          rules={{
+            '.activityUpdatedAt': {
+              display: 'block',
+            },
+            '.activityButtonGroup': {
+              display: 'none',
+            },
+            ':hover .activityUpdatedAt': {
+              display: 'none',
+            },
+            ':hover .activityButtonGroup': {
+              display: 'inline',
+            },
+          }}
+          />
+        <Panel>
+          <header className="clearfix" style={{marginBottom: '3px'}}>
+            <label style={{marginBottom: '0'}}>@{author}</label>
+            <span className="pull-right activityUpdatedAt" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>{updated_at}</span>
+            <ul className="activityButtonGroup">
+              <li style={[ styles.activityIcon ]} className="pull-right fa fa-pencil activityEditIcon"></li>
+              <li style={[ styles.activityIcon ]} className="pull-right fa fa-trash-o activityDeleteIcon"></li>
+            </ul>
+          </header>
+          {content}
+        </Panel>
+      </div>
     );
   },
 
@@ -37,6 +72,9 @@ const Activity = React.createClass({
     const { author, content, updated_at, dataKey } = this.props;
     return (
       <Panel>
+        <header className="clearfix" style={{marginBottom: '3px'}}>
+          <label style={{marginBottom: '0'}}>@{author}</label>
+        </header>
         <Input
           style={{marginBottom:"5px"}}
           type="textarea"
@@ -59,4 +97,4 @@ const Activity = React.createClass({
   },
 })
 
-export default Activity;
+export default Radium(Activity);
