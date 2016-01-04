@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import activityActions from '../actions/ActivityActions'
-import { Panel, Input, Button, ButtonToolbar, Modal } from 'react-bootstrap';
+import modalActions from '../actions/modalActions'
+import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
 import Radium, { Style } from 'radium'
 
 const styles = {
@@ -40,8 +41,11 @@ const Activity = React.createClass({
 
   handleDelete(e) {
     const { dataKey } = this.props
-    activityActions.deleteActivity({
-      id: dataKey,
+    modalActions.displayModal({
+      title: "Delete Activity?",
+      body: "",
+      kind: 'delete',
+      handleSubmit: activityActions.deleteActivity.bind(null, { id: dataKey }),
     })
   },
 
@@ -50,23 +54,6 @@ const Activity = React.createClass({
 
     return (
       <div style={[styles.activityContainer]} className="activityContainer">
-        <div className="static-modal">
-    <Modal show={true}>
-     <Modal.Header closeButton>
-       <Modal.Title>Modal title</Modal.Title>
-     </Modal.Header>
-
-     <Modal.Body>
-       One fine body...
-     </Modal.Body>
-
-     <Modal.Footer>
-       <Button>Close</Button>
-       <Button bsStyle="primary">Save changes</Button>
-     </Modal.Footer>
-
-   </Modal>
- </div>
         <Style
           scopeSelector='.activityContainer'
           rules={{

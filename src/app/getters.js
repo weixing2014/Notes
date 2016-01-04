@@ -1,4 +1,4 @@
-const lanes = ['lanes'];
+const lanes = ['lanes']
 
 const laneToDropIsEmpty = [
   ['lanes'],
@@ -11,7 +11,8 @@ const laneToDropIsEmpty = [
       ]
     ).count() === 0;
   },
-];
+]
 
+const modal = ['modal']
 
-export default { lanes, laneToDropIsEmpty }
+export default { lanes, laneToDropIsEmpty, modal }

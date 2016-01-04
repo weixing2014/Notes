@@ -2,6 +2,7 @@ import noteActions from './actions/NoteActions'
 import reactor from './libs/reactor'
 import DragNDropStore from './stores/dragNDropStore'
 import Store from './stores/Store'
+import ModalStore from './stores/modalStore'
 
 (function () {
   let React = require('react');
@@ -24,6 +25,7 @@ import Store from './stores/Store'
   reactor.registerStores({
     dragNDropStore: DragNDropStore,
     lanes: Store,
+    modal: ModalStore,
   });
 
   noteActions.fetchAppState();
