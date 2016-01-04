@@ -25,6 +25,7 @@ export default Store({
     this.on('UPDATE_ACTIVITY', updateActivity)
     this.on('APPEND_EDITING_ACTIVITY', appendEditingActivity)
     this.on('DELETE_ACTIVITY', deleteActivity)
+    this.on('POST_ALL_EDITING_ACTIVITIES', postAllEditingActivities)
   },
 })
 
@@ -199,6 +200,19 @@ function updateActivity(state, { id, content, isEditing }) {
   if (isEditing === true || isEditing === false) { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'isEditing'], isEditing) }
 
   return newState;
+}
+
+function postAllEditingActivities(state, { noteId }) {
+  const { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId: noteId })
+  const size = state.getIn([laneIndex, 'notes', noteIndex, 'activities']).size
+
+  let newState = state
+
+  for (let i = 0; i < size - 1; i++) {
+    newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', i, 'isEditing'], false)
+  }
+
+  return newState
 }
 
 function appendEditingActivity(state, { id, noteId }) {

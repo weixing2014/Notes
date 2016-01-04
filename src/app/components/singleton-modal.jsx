@@ -1,7 +1,7 @@
 import React from 'react'
 import reactor from '../libs/reactor'
 import { Modal, Button } from 'react-bootstrap'
-import modalActions from '../actions/modalActions'
+import modalActions from '../actions/ModalActions'
 import getters from './../getters'
 import Radium from 'radium'
 

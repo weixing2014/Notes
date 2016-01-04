@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import activityActions from '../actions/ActivityActions'
-import modalActions from '../actions/modalActions'
+import modalActions from '../actions/ModalActions'
 import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
 import Radium, { Style } from 'radium'
 
@@ -17,11 +17,16 @@ const styles = {
 }
 
 const Activity = React.createClass({
-
   handleCancel(e) {
-    const { content } = this.props;
+    const { dataKey, content } = this.props;
 
     this.refs.activityContentInput.refs.input.value = content;
+    if (content) {
+      activityActions.postEditingActivity({
+        id: dataKey,
+        content: content,
+      })
+    }
   },
 
   handlePost(e) {

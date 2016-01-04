@@ -9,6 +9,12 @@ export default {
     })
   },
 
+  postAllEditingActivities({ noteId }) {
+    reactor.batch(function() {
+      reactor.dispatch('POST_ALL_EDITING_ACTIVITIES', { noteId })
+    })
+  },
+
   editActivity({ id }) {
     reactor.dispatch('UPDATE_ACTIVITY', { id: id, isEditing: true })
   },

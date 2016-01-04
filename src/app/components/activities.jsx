@@ -6,9 +6,9 @@ const Activities = React.createClass({
     const { list } = this.props;
 
     return list.map(
-      function( activity ) {
+      function( activity, index ) {
         const { id, ...other} = activity
-        return <Activity key={id} dataKey={id} {...other} />
+        return <Activity ref={index} key={id} dataKey={id} {...other} />
       }
     )
   },

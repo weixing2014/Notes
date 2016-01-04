@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import noteActions from '../actions/NoteActions'
-import modalActions from '../actions/modalActions'
+import modalActions from '../actions/ModalActions'
+import activityActions from '../actions/ActivityActions'
 import Activities from './activities'
 import { Panel, Input, Button, ListGroup, ListGroupItem, Label, ButtonToolbar } from 'react-bootstrap';
 
@@ -22,54 +23,55 @@ const NoteEdit = React.createClass({
     }
   },
 
-  updateNote() {
-    const { laneId, noteId, status } = this.props;
-    if (this.refs.titleInput.getValue()) {
-      const note = {
-        laneId: laneId,
-        noteId: noteId,
-        title: this.refs.titleInput.getValue(),
-      }
+  // updateNote() {
+  //   const { laneId, noteId, status } = this.props;
+  //   if (this.refs.titleInput.getValue()) {
+  //     const note = {
+  //       laneId: laneId,
+  //       noteId: noteId,
+  //       title: this.refs.titleInput.getValue(),
+  //     }
+  //
+  //     if ( status === 'new' ) {
+  //       noteActions.postNewNote(note);
+  //     } else if ( status === 'editing' ) {
+  //       noteActions.postEditingNote(note);
+  //     }
+  //   } else {
+  //     noteActions.deleteNote({
+  //       noteId: noteId,
+  //     })
+  //   }
+  // },
 
-      if ( status === 'new' ) {
-        noteActions.postNewNote(note);
-      } else if ( status === 'editing' ) {
-        noteActions.postEditingNote(note);
-      }
-    } else {
-      noteActions.deleteNote({
-        noteId: noteId,
-      })
-    }
-  },
+  // cancelPostingNote(event) {
+  //   const { noteId, status } = this.props;
+  //
+  //   if ( status === 'new' ) {
+  //     noteActions.deleteNote({
+  //       noteId: noteId,
+  //     })
+  //   } else if ( status === 'editing' ){
+  //     noteActions.postEditingNote({
+  //       noteId: noteId,
+  //       status: 'edited',
+  //     })
+  //   }
+  // },
 
-  cancelPostingNote(event) {
-    const { noteId, status } = this.props;
+  // postNote(event) {
+  //   event.preventDefault();
+  //   this.updateNote();
+  // },
 
-    if ( status === 'new' ) {
-      noteActions.deleteNote({
-        noteId: noteId,
-      })
-    } else if ( status === 'editing' ){
-      noteActions.postEditingNote({
-        noteId: noteId,
-        status: 'edited',
-      })
-    }
-  },
-
-  postNote(event) {
-    event.preventDefault();
-    this.updateNote();
-  },
-
-  onLaneInputKeyDown(e) {
-    if (e.keyCode === 13) {
-      this.updateNote();
-    }
-  },
+  // onLaneInputKeyDown(e) {
+  //   if (e.keyCode === 13) {
+  //     this.updateNote();
+  //   }
+  // },
 
   handleSave(e) {
+    debugger;
     const { noteId } = this.props;
 
     if (this.refs.titleInput.refs.input.value) {
@@ -103,7 +105,7 @@ const NoteEdit = React.createClass({
     return activities.map(
       function( activity ) {
         const { id, ...other} = activity
-        return <Activity key={id} {...other} />
+        return <Activity ref="activities" key={id} {...other} />
       }
     )
   },
@@ -142,7 +144,7 @@ const NoteEdit = React.createClass({
           type="textarea"
           defaultValue={ description }
           />
-        <Activities label="Activity" list={ activities } />
+        <Activities ref="activities" label="Activity" list={ activities } />
       </Panel>
     );
   },

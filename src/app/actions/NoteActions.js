@@ -1,13 +1,19 @@
-import reactor from '../libs/reactor';
-import uuid from 'node-uuid';
-import localforage from 'localforage';
+import reactor from '../libs/reactor'
+import uuid from 'node-uuid'
+import localforage from 'localforage'
+import getters from './../getters'
 
 export default {
   addNote({ laneId }) {
-    reactor.dispatch(
-      'ADD_NOTE',
-      { laneId }
-    );
+    const lane = reactor.evaluate(getters.lanes).findIndex( lane => lane.get('id') === laneId )
+    const laneIncludesNewNote = reactor.evaluate(['lanes']).getIn([0, 'notes']).map( note => note.get('status') ).includes('new')
+
+    if (!laneIncludesNewNote) {
+      reactor.dispatch(
+        'ADD_NOTE',
+        { laneId }
+      );
+    }
   },
 
   toggleNoteStatus({ noteId, status }) {
