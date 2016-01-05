@@ -196,7 +196,7 @@ function updateActivity(state, { id, content, isEditing }) {
   let newState = state;
 
   if (activityIndex === -1) return state;
-  if (content) { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'content'], content) }
+  if (typeof content === 'string') { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'content'], content) }
   if (isEditing === true || isEditing === false) { newState = newState.setIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex, 'isEditing'], isEditing) }
 
   return newState;

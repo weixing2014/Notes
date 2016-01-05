@@ -17,30 +17,12 @@ const styles = {
 }
 
 const Activity = React.createClass({
-  handleCancel(e) {
-    const { dataKey, content } = this.props;
-
-    this.refs.activityContentInput.refs.input.value = content;
-    if (content) {
-      activityActions.postEditingActivity({
-        id: dataKey,
-        content: content,
-      })
-    }
-  },
-
-  handlePost(e) {
-    const { dataKey } = this.props;
-    activityActions.postEditingActivity({
-      id: dataKey,
-      content: this.refs.activityContentInput.refs.input.value,
-    })
-  },
 
   handleEdit(e) {
     const { dataKey } = this.props
-    activityActions.editActivity({
+    activityActions.toggleEditingStatus({
       id: dataKey,
+      isEditing: true,
     })
   },
 
@@ -54,7 +36,7 @@ const Activity = React.createClass({
     })
   },
 
-  renderActivity() {
+  render() {
     const { author, content, updated_at } = this.props;
 
     return (
@@ -89,34 +71,6 @@ const Activity = React.createClass({
         </Panel>
       </div>
     );
-  },
-
-  renderActivityEdit() {
-    const { author, content, updated_at, dataKey } = this.props;
-    return (
-      <Panel>
-        <header className="clearfix" style={{marginBottom: '3px'}}>
-          <label style={{marginBottom: '0'}}>@{author}</label>
-        </header>
-        <Input
-          style={{marginBottom:"5px"}}
-          type="textarea"
-          ref="activityContentInput"
-          placeholder="New Activity"
-          defaultValue={content}
-          standalone
-          />
-          <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={this.handlePost}>Done</Button>
-            <Button className="pull-right" bsSize="small" bsStyle="link" onClick={this.handleCancel}>Cancel</Button>
-          </ButtonToolbar>
-      </Panel>
-    )
-  },
-
-  render() {
-    const { isEditing } = this.props;
-    return isEditing ? this.renderActivityEdit() : this.renderActivity();
   },
 })
 

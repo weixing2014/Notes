@@ -23,47 +23,6 @@ const NoteEdit = React.createClass({
     }
   },
 
-  // updateNote() {
-  //   const { laneId, noteId, status } = this.props;
-  //   if (this.refs.titleInput.getValue()) {
-  //     const note = {
-  //       laneId: laneId,
-  //       noteId: noteId,
-  //       title: this.refs.titleInput.getValue(),
-  //     }
-  //
-  //     if ( status === 'new' ) {
-  //       noteActions.postNewNote(note);
-  //     } else if ( status === 'editing' ) {
-  //       noteActions.postEditingNote(note);
-  //     }
-  //   } else {
-  //     noteActions.deleteNote({
-  //       noteId: noteId,
-  //     })
-  //   }
-  // },
-
-  // cancelPostingNote(event) {
-  //   const { noteId, status } = this.props;
-  //
-  //   if ( status === 'new' ) {
-  //     noteActions.deleteNote({
-  //       noteId: noteId,
-  //     })
-  //   } else if ( status === 'editing' ){
-  //     noteActions.postEditingNote({
-  //       noteId: noteId,
-  //       status: 'edited',
-  //     })
-  //   }
-  // },
-
-  // postNote(event) {
-  //   event.preventDefault();
-  //   this.updateNote();
-  // },
-
   // onLaneInputKeyDown(e) {
   //   if (e.keyCode === 13) {
   //     this.updateNote();
@@ -71,7 +30,6 @@ const NoteEdit = React.createClass({
   // },
 
   handleSave(e) {
-    debugger;
     const { noteId } = this.props;
 
     if (this.refs.titleInput.refs.input.value) {
