@@ -2,17 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import activityActions from '../actions/ActivityActions'
 import modalActions from '../actions/ModalActions'
-import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap';
+import { Panel, Input, Button, ButtonToolbar } from 'react-bootstrap'
 import Radium, { Style } from 'radium'
+import Icon from './icon'
 
 const styles = {
-  activityContainer: {
+  container: {
     ':hover': {
       cursor: 'pointer',
     },
   },
-  activityIcon: {
-    padding: '0 .3em',
+  updateAt: {
+    'font-size': '0.8em',
+    'margin-top': '0.2em',
+    'color': '#777',
   },
 }
 
@@ -61,13 +64,13 @@ const Activity = React.createClass({
         <Panel>
           <header className="clearfix" style={{marginBottom: '3px'}}>
             <label style={{marginBottom: '0'}}>@{author}</label>
-            <span className="pull-right activityUpdatedAt" style={{fontSize: '0.8em', marginTop: '0.2em', color: '#777'}}>{updated_at}</span>
-            <ul className="activityButtonGroup">
-              <li onClick={ this.handleEdit } style={[ styles.activityIcon ]} className="pull-right fa fa-pencil activityEditIcon"></li>
-              <li onClick={ this.handleDelete } style={[ styles.activityIcon ]} className="pull-right fa fa-trash-o activityDeleteIcon"></li>
-            </ul>
+            <span className="pull-right activityUpdatedAt" style={[styles.updateAt]}>{updated_at}</span>
+            <span className="pull-right activityButtonGroup">
+              <Icon onClick={ this.handleEdit } className="pencil"/>
+              <Icon onClick={ this.handleDelete} className="trash-o"/>
+            </span>
           </header>
-          {content}
+          <div>{content}</div>
         </Panel>
       </div>
     );

@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import _ from 'lodash';
 import { Panel, Input, Button } from 'react-bootstrap';
-import NoteEdit from './note-edit'
 import noteActions from '../actions/NoteActions'
-import {DragSource, DropTarget} from 'react-dnd'
+import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../constants/item-types'
-import Icon from './icon'
-import Radium, {Style} from 'radium'
+import Radium, { Style } from 'radium'
 
 const noteSource = {
   beginDrag(props) {
@@ -56,49 +54,34 @@ const styles = {
 }
 
 const Note = React.createClass({
-  renderEdit() {
-    const {...others } = this.props;
-    return (
-      <NoteEdit {...others} />
-    );
-  },
-
-  renderNote() {
-    const { noteId, title } = this.props
-    return (
-      <Panel
-        className="noteContainer"
-        style={styles.panel}
-        onClick={noteActions.editNote.bind(null, {noteId})}
-        >
-        <Style
-          scopeSelector='.noteContainer'
-          rules={{
-            '.noteAction': {
-              display: 'none',
-            },
-            ':hover .noteAction': {
-              display: 'block',
-            },
-          }
-        } />
-        <span
-          style={styles.noteDisplay}
-          >
-          {title}
-        </span>
-      </Panel>
-    );
-  },
 
   render() {
-    const { connectDragSource, connectDropTarget, isDragging, status } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, status, noteId, title } = this.props;
 
     const opacity = isDragging? 0 : 1;
 
     return connectDragSource(connectDropTarget(
       <div style={{opacity: opacity, padding: '5px 0'}}>
-        { (status === 'new' || status === 'editing') ? this.renderEdit() : this.renderNote() }
+        <Panel
+          className="noteContainer"
+          style={styles.panel}
+          onClick={noteActions.editNote.bind(null, {noteId})}
+          >
+          <Style
+            scopeSelector='.noteContainer'
+            rules={{
+              '.noteAction': {
+                display: 'none',
+              },
+              ':hover .noteAction': {
+                display: 'block',
+              },
+            }
+          } />
+          <span style={styles.noteDisplay}>
+            {title}
+          </span>
+        </Panel>
       </div>
     ));
   },

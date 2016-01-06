@@ -8,7 +8,7 @@ import Radium, { Style } from 'radium'
 const ActivityEdit = React.createClass({
   componentWillUnmount() {
     const { dataKey } = this.props
-    
+
     activityActions.postEditingActivity({
       id: dataKey,
       content: this.refs.activityContentInput.refs.input.value,
@@ -56,8 +56,6 @@ const ActivityEdit = React.createClass({
           </ButtonToolbar>
       </Panel>
     )
-    // const { isEditing } = this.props;
-    // return isEditing ? this.renderActivityEdit() : this.renderActivity();
   },
 })
 

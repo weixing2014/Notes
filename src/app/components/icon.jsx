@@ -1,15 +1,12 @@
 import React from 'react';
-import { Button, Tooltip } from 'react-bootstrap';
-import Radium from 'radium'
-
+import Radium, { Style } from 'radium'
 
 const styles = {
   base: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    right: '0',
+    padding: '0 .3em',
+    opacity: 0.8,
     ':hover': {
+      opacity: 1,
       cursor: 'pointer',
     },
   },
@@ -18,19 +15,12 @@ const styles = {
 const Icon = React.createClass({
 
   render() {
-    const { iconName, className, style, onClick } = this.props;
+    const { style, onClick, className } = this.props;
 
     return (
-      <i
-        style={[
-          styles.base,
-          style,
-        ]}
-        onClick={onClick}
-        className={`fa fa-${iconName} ${className}`}
-        />
+      <i className={"fa fa-" + className} style={[ styles.base, style ]} onClick={onClick} />
     );
   },
-});
+})
 
 export default Radium(Icon);

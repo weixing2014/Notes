@@ -1,16 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import _ from 'lodash'
-import Card from 'material-ui/lib/card/card';
-import { Panel, Input, Button } from 'react-bootstrap';
-import noteActions from '../actions/NoteActions';
-import laneActions from '../actions/LaneActions';
-import Icon from './icon'
+import Card from 'material-ui/lib/card/card'
+import { Panel, Input, Button } from 'react-bootstrap'
+import noteActions from '../actions/NoteActions'
+import laneActions from '../actions/LaneActions'
+import modalActions from '../actions/ModalActions'
 import { DropTarget } from 'react-dnd'
 import ItemTypes from '../constants/item-types'
 import Notes from './notes'
+import Icon from './icon'
 
 const noteTarget = {
   hover(targetProps, monitor) {
@@ -54,10 +55,6 @@ const Lane = React.createClass({
     laneActions.editLaneName({ laneId });
   },
 
-  cancelUpdatingLaneName() {
-
-  },
-
   selectText(e) {
     e.target.select();
   },
@@ -66,6 +63,16 @@ const Lane = React.createClass({
     if (e.keyCode === 13) {
       this.updateLaneName(e);
     }
+  },
+
+  handleDelete(e) {
+    const { laneId } = this.props
+    modalActions.displayModal({
+      title: "Delete Lane?",
+      body: "",
+      kind: 'delete',
+      handleSubmit: laneActions.deleteLane.bind(null, { laneId }),
+    })
   },
 
   renderEditingName() {
@@ -98,24 +105,11 @@ const Lane = React.createClass({
 
     return (
       <div className="lane-edit-container">
+        <span className="pull-right">
+          <Icon className="plus" onClick={noteActions.addNote.bind(null, { laneId })} />
+          <Icon className="trash-o" onClick={this.handleDelete} />
+        </span>
         <span onClick={this.editLaneName} style={{fontSize: '16px'}}>{name}</span>
-        <Icon
-          iconName='plus'
-          className='lane__edit-icon'
-          tooltipContent='Add Note'
-          style={{right: '30px'}}
-          onClick={
-            noteActions.addNote.bind(null, { laneId })
-          }
-        />
-        <Icon
-          iconName='trash-o'
-          className='lane__delete-icon'
-          tooltipContent='Delete Lane'
-          onClick={
-            laneActions.deleteLane.bind(null, { laneId })
-          }
-        />
       </div>
     );
   },
