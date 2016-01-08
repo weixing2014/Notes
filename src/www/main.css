@@ -1,15 +1,18 @@
 html {
   font-family: 'Roboto', sans-serif;
+  height: 100%;
 }
 
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   line-height: 20px;
+  height: 100%;
 }
 
 div.panel-body {
-  padding: 10px;
+  height:calc(100% - 50px);
+  overflow-y: scroll;
 }
 
 div.panel {

@@ -1,11 +1,7 @@
 /** In this file, we create a React component which incorporates components provided by material-ui */
 
 import React from 'react'
-import reactor from '../libs/reactor'
-import CartStore from './../stores/Store'
-import { Nav, NavItem, Button } from 'react-bootstrap'
-import uuid from 'node-uuid'
-import Notes from './notes'
+import { Button } from 'react-bootstrap'
 import Lanes from './lanes'
 import SingletonModal from './singleton-modal'
 import laneActions from '../actions/LaneActions'
@@ -16,10 +12,12 @@ const Main = React.createClass({
 
   render() {
     return (
-      <div ref="kanbanContainer" className="kanban-container container-fluid">
-        <Button onClick={laneActions.addLane} style={{margin: '10px 0'}}>
-          <i className="fa fa-plus"/> Add Lane
-        </Button>
+      <div ref="kanbanContainer" style={{height: '100%', width: '100%', padding: '0 5px'}} className="kanban-container">
+        <header style={{ height: "50px", width: "100%", position: 'relative' }}>
+          <Button onClick={laneActions.addLane} style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}>
+            <i className="fa fa-plus"/> Add Lane
+          </Button>
+        </header>
         <Lanes />
         <SingletonModal />
       </div>

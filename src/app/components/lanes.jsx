@@ -24,9 +24,9 @@ const Lanes = React.createClass({
 
 
   render() {
-        
+
     return (
-      <div className="row">
+      <div style={{ height: 'calc(100% - 60px)' }}>
         {
           this.state.lanes.map(
             lane => (
