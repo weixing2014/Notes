@@ -17,4 +17,5 @@ div.panel-body {
 
 div.panel {
   margin-bottom: 5px;
+  border-radius: 0;
 }

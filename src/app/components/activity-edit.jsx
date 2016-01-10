@@ -7,18 +7,19 @@ import Radium, { Style } from 'radium'
 
 const ActivityEdit = React.createClass({
   componentWillUnmount() {
-    const { dataKey } = this.props
+    const { dataKey, noteId } = this.props
 
     activityActions.postEditingActivity({
       id: dataKey,
+      noteId: noteId,
       content: this.refs.activityContentInput.refs.input.value,
     })
   },
 
   handleCancel(e) {
-    const { dataKey, content } = this.props;
+    const { dataKey, content } = this.props
 
-    this.refs.activityContentInput.refs.input.value = content;
+    this.refs.activityContentInput.refs.input.value = content
     if (content) {
       activityActions.toggleEditingStatus({
         id: dataKey,

@@ -215,15 +215,8 @@ function postAllEditingActivities(state, { noteId }) {
   return newState
 }
 
-function appendEditingActivity(state, { id, noteId }) {
-  let laneIndex, noteIndex;
-  if( id ) {
-    laneIndex = findIndexesForActivity(state, id).laneIndex
-    noteIndex = findIndexesForActivity(state, id).noteIndex
-  } else if ( noteId ) {
-    laneIndex = findLaneAndNoteIndex(state, { noteId: noteId }).laneIndex
-    noteIndex = findLaneAndNoteIndex(state, { noteId: noteId }).noteIndex
-  }
+function appendEditingActivity(state, { noteId }) {
+  let { laneIndex, noteIndex } = findLaneAndNoteIndex(state, { noteId: noteId })
 
   if (!state.getIn([laneIndex, 'notes', noteIndex, 'activities'])) {
     return state

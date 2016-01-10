@@ -23,12 +23,6 @@ const NoteEdit = React.createClass({
     }
   },
 
-  // onLaneInputKeyDown(e) {
-  //   if (e.keyCode === 13) {
-  //     this.updateNote();
-  //   }
-  // },
-
   handleSave(e) {
     const { noteId } = this.props;
 
@@ -78,7 +72,7 @@ const NoteEdit = React.createClass({
             type="textarea"
             defaultValue={ description }
             />
-          <Activities ref="activities" label="Activity" list={ activities } />
+          <Activities ref="activities" label="Activity" noteId={ noteId } list={ activities } />
         </Panel>
       </div>
     );

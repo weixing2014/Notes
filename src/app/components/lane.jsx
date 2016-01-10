@@ -130,7 +130,7 @@ const Lane = React.createClass({
     );
 
     return connectDropTarget(
-      <div style={{height: '100%', width: '33%'}}>
+      <div style={{height: '100%', width: '33%', display: 'inline-block'}}>
         <Panel
           className={"panel-info"}
           dataKey={laneId}
