@@ -19,3 +19,7 @@ div.panel {
   margin-bottom: 5px;
   border-radius: 0;
 }
+
+div.panel-heading {
+  line-height: 2.15;
+}

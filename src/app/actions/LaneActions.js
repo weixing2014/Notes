@@ -27,4 +27,8 @@ export default {
     const status = 'editing';
     reactor.dispatch('UPDATE_LANE', { laneId, status })
   },
+
+  moveLane({ sourceLaneId, targetLaneId }) {
+    reactor.dispatch('MOVE_LANE', { sourceLaneId, targetLaneId })
+  },
 }

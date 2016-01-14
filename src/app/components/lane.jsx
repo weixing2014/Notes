@@ -3,30 +3,37 @@ import ReactDOM from 'react-dom'
 import reactor from '../libs/reactor'
 import getters from './../getters'
 import _ from 'lodash'
-import Card from 'material-ui/lib/card/card'
 import { Panel, Input, Button } from 'react-bootstrap'
 import noteActions from '../actions/NoteActions'
 import laneActions from '../actions/LaneActions'
 import modalActions from '../actions/ModalActions'
-import { DropTarget } from 'react-dnd'
+import { DropTarget, DragSource } from 'react-dnd'
 import ItemTypes from '../constants/item-types'
 import Notes from './notes'
 import Icon from './icon'
 
-const noteTarget = {
+const noteAndLaneTarget = {
   hover(targetProps, monitor) {
-    const noteId = monitor.getItem().noteId;
-    const laneId = targetProps.laneId;
+    const sourceNoteId = monitor.getItem().noteId
+    const sourceLaneId = monitor.getItem().laneId
+    const targetLaneId = targetProps.laneId
 
-    reactor.batch(function(){
-      noteActions.setTargetLaneToDrop({ laneId: laneId });
-      if (reactor.evaluate(getters.laneToDropIsEmpty)) {
-        noteActions.attachToLane({
-          noteId,
-          laneId,
-        })
-      }
-    })
+    if (sourceNoteId) {
+      reactor.batch(function(){
+        noteActions.setTargetLaneToDrop({ laneId: targetLaneId });
+        if (reactor.evaluate(getters.laneToDropIsEmpty)) {
+          noteActions.attachToLane({
+            noteId: sourceNoteId,
+            laneId: targetLaneId,
+          })
+        }
+      })
+    } else if (sourceLaneId) {
+      laneActions.moveLane({
+        sourceLaneId,
+        targetLaneId,
+      })
+    }
   },
 }
 
@@ -109,7 +116,7 @@ const Lane = React.createClass({
           <Icon className="plus" onClick={noteActions.addNote.bind(null, { laneId })} />
           <Icon className="trash-o" onClick={this.handleDelete} />
         </span>
-        <span onClick={this.editLaneName} style={{fontSize: '16px'}}>{name}</span>
+        <span onClick={this.editLaneName} style={{ fontSize: '16px', cursor: 'pointer' }}>{name}</span>
       </div>
     );
   },
@@ -121,34 +128,61 @@ const Lane = React.createClass({
 
   render() {
 
-    const { laneId, name, status, connectDropTarget } = this.props;
+    const { laneId, name, status, connectDropTarget, connectDragSource, connectDragPreview, isDragging } = this.props;
 
-    const panelHeader = (
-      <div style={{position: 'relative'}}>
+    const opacity = isDragging ? 0 : 1;
+
+    const panelHeader = connectDragSource(
+      <div style={{ position: 'relative', cursour: 'move' }}>
         { this.isNewOrEditing() ? this.renderEditingName() : this.renderName()}
       </div>
     );
 
-    return connectDropTarget(
-      <div style={{height: '100%', width: '33%', display: 'inline-block'}}>
-        <Panel
-          className={"panel-info"}
-          dataKey={laneId}
-          header={panelHeader}
-          style={{height: '100%'}}
-          >
-          <Notes laneId={laneId} />
-        </Panel>
-      </div>
+    return connectDragPreview(
+      connectDropTarget(
+        <div style={{ height: '100%', width: '33%', display: 'inline-block', opacity: opacity }}>
+          <Panel
+            className={"panel-info"}
+            dataKey={laneId}
+            header={panelHeader}
+            style={{height: '100%'}}
+            >
+            <Notes laneId={laneId} />
+          </Panel>
+        </div>
+      )
     );
   },
 });
 
-export default DropTarget(
-  ItemTypes.NOTE,
-  noteTarget,
-  (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-  })
-)(Lane);
+const laneSource = {
+  beginDrag(props) {
+    return {
+      laneId: props.laneId,
+    }
+  },
+
+  isDragging(props, monitor) {
+    return props.laneId === monitor.getItem().laneId
+  },
+};
+
+export default _.compose(
+  DragSource(
+    ItemTypes.LANE,
+    laneSource,
+    (connect, monitor) => ({
+      connectDragSource: connect.dragSource(),
+      connectDragPreview: connect.dragPreview(),
+      isDragging: monitor.isDragging(),
+    })
+  ),
+  DropTarget(
+    [ ItemTypes.LANE, ItemTypes.NOTE ],
+    noteAndLaneTarget,
+    (connect, monitor) => ({
+      connectDropTarget: connect.dropTarget(),
+      isOver: monitor.isOver(),
+    })
+  )
+)(Lane)

@@ -21,6 +21,7 @@ export default Store({
     this.on('ATTACH_TO_LANE', attachToLane)
 
     this.on('UPDATE_LANE', updateLane)
+    this.on('MOVE_LANE', moveLane)
 
     this.on('UPDATE_ACTIVITY', updateActivity)
     this.on('APPEND_EDITING_ACTIVITY', appendEditingActivity)
@@ -244,4 +245,20 @@ function appendEditingActivity(state, { noteId }) {
 function deleteActivity(state, { id }) {
   const { laneIndex, noteIndex, activityIndex } = findIndexesForActivity(state, id)
   return state.deleteIn([laneIndex, 'notes', noteIndex, 'activities', activityIndex])
+}
+
+function moveLane(state, { sourceLaneId, targetLaneId }) {
+  console.log( sourceLaneId, targetLaneId)
+  if ( sourceLaneId !== targetLaneId ) {
+    console.log('hh')
+    const sourceLaneIndex = findLaneIndex(state, { laneId: sourceLaneId })
+    const targetLaneIndex = findLaneIndex(state, { laneId: targetLaneId })
+
+    const sourceLane = state.get(sourceLaneIndex)
+    const stateWithoutSourceLane = state.delete(sourceLaneIndex)
+
+    return stateWithoutSourceLane.splice(targetLaneIndex, 0, sourceLane);
+  }
+
+  return state
 }
