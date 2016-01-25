@@ -111,7 +111,7 @@ const Lane = React.createClass({
     const { name, laneId } = this.props;
 
     return (
-      <div className="lane-edit-container">
+      <div style={{cursor: "move"}} className="lane-edit-container">
         <span className="pull-right">
           <Icon className="plus" onClick={noteActions.addNote.bind(null, { laneId })} />
           <Icon className="trash-o" onClick={this.handleDelete} />
@@ -140,9 +140,8 @@ const Lane = React.createClass({
 
     return connectDragPreview(
       connectDropTarget(
-        <div style={{ height: '100%', width: '33%', display: 'inline-block', opacity: opacity }}>
+        <div style={{ height: '100%', width: '400px', display: 'inline-block', opacity: opacity }}>
           <Panel
-            className={"panel-info"}
             dataKey={laneId}
             header={panelHeader}
             style={{height: '100%'}}

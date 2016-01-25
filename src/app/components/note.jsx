@@ -44,7 +44,7 @@ const noteTarget = {
 const styles = {
   panel: {
     marginBottom: '0px',
-    cursor: 'pointer',
+    cursor: 'move',
     position: 'relative',
   },
   noteDisplay: {

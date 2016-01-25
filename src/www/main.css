@@ -22,4 +22,6 @@ div.panel {
 
 div.panel-heading {
   line-height: 2.15;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }

@@ -24,7 +24,6 @@ const Lanes = React.createClass({
 
 
   render() {
-
     return (
       <div style={{ height: 'calc(100% - 60px)', overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap' }}>
         {

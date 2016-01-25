@@ -50,11 +50,11 @@ const NoteEdit = React.createClass({
             standalone
             />
           <ButtonToolbar style={{marginTop: '5px'}}>
-            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={ this.handleSave }>Save & Close</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="primary" onClick={ this.handleSave }>Close</Button>
             <Button
               className="pull-right"
               bsSize="small"
-              bsStyle="danger"
+              bsStyle="default"
               onClick={
                 modalActions.displayModal.bind(null, {
                   title: "Delete Story?",
@@ -63,7 +63,7 @@ const NoteEdit = React.createClass({
                   handleSubmit: noteActions.deleteNote.bind(null, { noteId }),
                 })
               }>
-              Delete
+              <i className="fa fa-trash-o"></i>
             </Button>
           </ButtonToolbar>
           <Input

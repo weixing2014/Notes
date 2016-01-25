@@ -52,7 +52,7 @@ const ActivityEdit = React.createClass({
           standalone
           />
           <ButtonToolbar>
-            <Button className="pull-right" bsSize="small" bsStyle="success" onClick={this.handlePost}>Done</Button>
+            <Button className="pull-right" bsSize="small" bsStyle="primary" onClick={this.handlePost}>Add</Button>
             <Button className="pull-right" bsSize="small" bsStyle="link" onClick={this.handleCancel}>Cancel</Button>
           </ButtonToolbar>
       </Panel>
