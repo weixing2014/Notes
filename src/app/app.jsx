@@ -1,4 +1,4 @@
-import noteActions from './actions/NoteActions'
+import storageActions from './actions/StorageActions'
 import reactor from './libs/reactor'
 import DragNDropStore from './stores/dragNDropStore'
 import Store from './stores/Store'
@@ -28,7 +28,7 @@ import ModalStore from './stores/modalStore'
     modal: ModalStore,
   });
 
-  noteActions.fetchAppState();
+  storageActions.fetchAppState();
 
   ReactDOM.render(<Main />, document.getElementById('app'));
 

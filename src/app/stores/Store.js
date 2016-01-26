@@ -9,7 +9,7 @@ export default Store({
 
   initialize() {
     this.on('RECEIVE_APP_STATE', receiveAppState)
-
+    
     this.on('ADD_LANE', addLane)
     this.on('DELETE_LANE', deleteLane)
 
@@ -31,7 +31,7 @@ export default Store({
 })
 
 function receiveAppState(state, { appState }) {
-  return toImmutable(appState);
+  return toImmutable(appState.lanes);
 }
 
 function deleteLane(state, { laneId }) {

@@ -1,6 +1,5 @@
 import reactor from '../libs/reactor'
 import uuid from 'node-uuid'
-import localforage from 'localforage'
 import getters from './../getters'
 
 export default {
@@ -67,23 +66,6 @@ export default {
         isAbove,
       }
     );
-  },
-
-  persist() {
-    const appState = reactor.evaluate(['lanes']).toJS();
-
-    localforage.setItem('kanbanAppState', appState);
-  },
-
-  fetchAppState() {
-    localforage.getItem('kanbanAppState', function(err, value) {
-      reactor.dispatch(
-        'RECEIVE_APP_STATE',
-        {
-          appState: value,
-        }
-      );
-    });
   },
 
   setTargetLaneToDrop({ laneId }) {

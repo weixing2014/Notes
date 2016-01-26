@@ -2,6 +2,7 @@ import React from 'react'
 import reactor from '../libs/reactor'
 import { Modal, Button } from 'react-bootstrap'
 import modalActions from '../actions/ModalActions'
+import storageActions from '../actions/StorageActions';
 import getters from './../getters'
 import Radium from 'radium'
 
@@ -15,7 +16,7 @@ const kinds = {
 const SingletonModal = React.createClass({
 
   mixins: [reactor.ReactMixin],
-
+  
   getDataBindings() {
     return {
       modal: getters.modal,

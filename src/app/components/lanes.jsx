@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import reactor from '../libs/reactor'
 import getters from './../getters'
-import Lane from './lane.jsx';
-import noteActions from '../actions/NoteActions';
+import Lane from './lane.jsx'
+import storageActions from '../actions/StorageActions'
 
 const Lanes = React.createClass({
 
@@ -15,13 +15,12 @@ const Lanes = React.createClass({
   },
 
   componentDidMount() {
-    noteActions.persist();
+    storageActions.persist();
   },
 
   componentDidUpdate() {
-    noteActions.persist();
+    storageActions.persist();
   },
-
 
   render() {
     return (

@@ -37,6 +37,12 @@ const NoteEdit = React.createClass({
     }
   },
 
+  onNoteInputKeyDown(e) {
+    if (e.keyCode === 13) {
+      this.handleSave(e);
+    }
+  },
+
   render() {
     const { title, status, description, activities, noteId } = this.props;
     return (
@@ -47,6 +53,7 @@ const NoteEdit = React.createClass({
             ref="titleInput"
             placeholder="Story title"
             defaultValue={ title }
+            onKeyDown={this.onNoteInputKeyDown}
             standalone
             />
           <ButtonToolbar style={{marginTop: '5px'}}>
