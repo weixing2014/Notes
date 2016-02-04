@@ -1,7 +1,7 @@
 ## Installation
 After cloning the repository, install dependencies:
 ```
-cd <project folder>/material-ui/examples/webpack-example
+cd <project folder>
 npm install
 ```
 
