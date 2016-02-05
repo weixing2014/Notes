@@ -33,6 +33,7 @@
     "moment": "^2.10.6",
     "node-uuid": "^1.4.7",
     "nuclear-js": "^1.2.1",
+    "radium": "^0.16.5",
     "react": "^0.14.3",
     "react-bootstrap": "^0.28.1",
     "react-dnd": "^2.0.2",

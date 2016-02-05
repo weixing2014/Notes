@@ -13,8 +13,8 @@ const styles = {
     },
   },
   updateAt: {
-    'font-size': '0.8em',
-    'margin-top': '0.2em',
+    'fontSize': '0.8em',
+    'marginTop': '0.2em',
     'color': '#777',
   },
 }

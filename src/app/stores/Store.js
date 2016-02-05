@@ -112,8 +112,14 @@ function updateNote(state, { noteId, title, status, description }) {
 }
 
 function findLaneAndNoteIndex(state, { noteId }) {
-  const laneIndex = findLaneIndex(state, { noteId }),
-        noteIndex = state.getIn([laneIndex, 'notes']).findIndex((n) => n.get('id') === noteId);
+
+  const laneIndex = findLaneIndex(state, { noteId });
+
+  if (laneIndex === -1) {
+    return false;
+  } // Todo: Just a band aid for removing the last lane. Something must be wrong here.
+
+  const noteIndex = state.getIn([laneIndex, 'notes']).findIndex((n) => n.get('id') === noteId);
 
   return { laneIndex, noteIndex };
 }
